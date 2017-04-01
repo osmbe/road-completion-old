@@ -2,7 +2,7 @@
 
 cd ~
 
-sudo apt-get install -y libproj-dev
+sudo apt-get install -y build-essential libproj-dev
 
 # https://trac.osgeo.org/gdal/wiki/DownloadSource
 wget http://download.osgeo.org/gdal/2.1.3/gdal-2.1.3.tar.gz
