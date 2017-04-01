@@ -1,0 +1,23 @@
+{
+  "name": "road-completion",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmbe/road-completion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/osmbe/road-completion/issues"
+  },
+  "homepage": "https://github.com/osmbe/road-completion#readme",
+  "dependencies": {
+    "@mapbox/geojson-normalize": "0.0.1",
+    "@mapbox/tile-reduce": "^3.2.0",
+    "@turf/turf": "^3.14.3",
+    "geojson-flatten": "^0.2.1"
+  }
+}
