@@ -1,5 +1,5 @@
-var TileReduce = require('tile-reduce');
-var turf = require('turf');
+var TileReduce = require('@mapbox/tile-reduce');
+var turf = require('@turf/turf');
 var bbox = [4293,6022,14];
 
 //var area = JSON.parse(argv.area);

@@ -1,7 +1,7 @@
-var turf = require('turf'),
+var turf = require('@turf/turf'),
   flatten = require('geojson-flatten'),
-  normalize = require('geojson-normalize'),
-  tilebelt = require('tilebelt');
+  normalize = require('@mapbox/geojson-normalize'),
+  tilebelt = require('@mapbox/tilebelt');
 
 module.exports = function(tileLayers, tile, done) {
   // concat feature classes and normalize data

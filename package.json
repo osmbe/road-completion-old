@@ -4,7 +4,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "get-data": "sh ./scripts/get-data.sh"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@mapbox/geojson-normalize": "0.0.1",
     "@mapbox/tile-reduce": "^3.2.0",
+    "@mapbox/tilebelt": "^1.0.1",
     "@turf/turf": "^3.14.3",
     "geojson-flatten": "^0.2.1"
   }
