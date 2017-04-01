@@ -5,7 +5,7 @@ This is based on some stuff mapbox started: <https://www.mapbox.com/blog/osm-qa-
 ## Install
 
 ```
-git clone git@github.com:osmbe/road-completion.git
+git clone https://github.com/osmbe/road-completion.git
 
 cd road-completion
 
