@@ -1,6 +1,6 @@
 # Road completion project
 
-This is based on some stuff mapbox started, <https://www.mapbox.com/blog/osm-qa-tiles/>f, and uses their QA tile-based stuff to compare government road datasets to OpenStreetMap. 
+This is based on some stuff mapbox started, <https://www.mapbox.com/blog/osm-qa-tiles/>, and uses their QA tile-based stuff to compare government road datasets to OpenStreetMap. 
 
 It uses the following tools:
 
