@@ -1,6 +1,12 @@
 # Road completion project
 
-This is based on some stuff mapbox started: <https://www.mapbox.com/blog/osm-qa-tiles/>
+This is based on some stuff mapbox started, <https://www.mapbox.com/blog/osm-qa-tiles/>f, and uses their QA tile-based stuff to compare government road datasets to OpenStreetMap. 
+
+It uses the following tools:
+
+- GDAL: to convert shapefiles from local project to WGS84.
+- [tippecanoe](https://github.com/mapbox/tippecanoe): a tool from Mapbox to generate vector tiles.
+- [tilereduce](https://github.com/mapbox/tile-reduce): another tool from Mapbox (thanks!) to run analysis on the tile data itself.
 
 ## Install
 
@@ -14,7 +20,7 @@ sh scripts/install-gdal.sh
 sh scripts/install-tippecanoe.sh
 ```
 
-Updated npm packages and run the _get-data_ that does a couple of things:
+Updates npm packages and run the _get-data_ that does a couple of things:
 
 - Downloads OSM-data for Belgium.
 - Splits this into vector tiles using [tippecanoe](https://github.com/mapbox/tippecanoe): belgium.mbtiles
