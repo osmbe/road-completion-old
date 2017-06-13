@@ -20,7 +20,7 @@ module.exports = function(tileLayers, tile, done) {
   tigerRoads = normalize(flatten(tigerRoads));
 
   // buffer streets
-  var streetBuffers = turf.featurecollection([]);
+  var streetBuffers = turf.featureCollection([]);
   streetBuffers.features = osmData.features.map(function(f){
     if (f.properties.highway) {
       return turf.buffer(road, 20, 'meters').features[0];
