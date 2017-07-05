@@ -1,38 +1,36 @@
-var TileReduce = require('@mapbox/tile-reduce');
+var tileReduce = require('@mapbox/tile-reduce');
 var turf = require('@turf/turf');
 var bbox = [4293,6022,14];
 
 //var area = JSON.parse(argv.area);
 var opts = {
   zoom: 15,
-  tileLayers: [
+  sources: [
     {
       name: 'osmdata',
-      url: __dirname + '/latest.planet.mbtiles',
+      url: __dirname + '/data/belgium.mbtiles',
       layers: ['osm']
     },
     {
-      name: 'tiger',
-      url: __dirname + '/tiger.mbtiles',
-      layers: ['tiger']
+      name: 'wegenregister',
+      url: __dirname + '/data/wegenregister.mbtiles',
+      layers: ['wegenregister']
     }
   ],
-  map: __dirname + '/difference.js'
+  map: __dirname + '/difference.js',
+  bbox: bbox
 };
 
-var tilereduce = TileReduce(bbox, opts);
-var diff = turf.featurecollection([]);
+var diff = turf.featureCollection([]);
 
-tilereduce.on('reduce', function(result){
+console.log(diff);
+
+tileReduce(opts).on('reduce', function(num) {
   diff.features = diff.features.concat(result.features);
-});
-
-tilereduce.on('end', function(error){
+})
+.on('error', function(err){
+  throw err;
+})
+.on('end', function() {
   console.log(JSON.stringify(diff));
 });
-
-tilereduce.on('error', function(err){
-  throw err;
-});
-
-tilereduce.run();
