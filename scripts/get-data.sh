@@ -10,6 +10,6 @@ gunzip ./data/belgium.mbtiles.gz
 wget -O ./data/Wegenregister_SHAPE_20170622.zip https://downloadagiv.blob.core.windows.net/wegenregister/Wegenregister_SHAPE_20170622.zip
 unzip ./data/Wegenregister_SHAPE_20170622.zip -d ./data
 
-ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./data/wegsegment.geojson ./data/Wegenregister_SHAPE_20170323/Shapefile/Wegsegment.shp
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./data/wegsegment.geojson ./data/Wegenregister_SHAPE_20170622/Shapefile/Wegsegment.shp
 
 tippecanoe -o ./data/wegenregister.mbtiles ./data/wegsegment.geojson
