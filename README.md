@@ -22,8 +22,8 @@ sh scripts/install-tippecanoe.sh
 
 Updates npm packages and run the _get-data_ that does a couple of things:
 
-- Downloads OSM-data for Belgium.
-- Splits this into vector tiles using [tippecanoe](https://github.com/mapbox/tippecanoe): belgium.mbtiles
+- Downloads OSM-data for Antwerp.
+- Splits this into vector tiles using [tippecanoe](https://github.com/mapbox/tippecanoe): antwerp.mbtiles
 - Donwloads road data from the flemish government called 'wegenregister'.
 - Splits this also into vector tiles: wegenregister.mbtiles
 

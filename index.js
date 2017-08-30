@@ -8,7 +8,7 @@ var opts = {
   sources: [
     {
       name: 'osmdata',
-      url: __dirname + '/data/belgium.mbtiles',
+      url: __dirname + '/data/antwerp.mbtiles',
       layers: ['osm']
     },
     {

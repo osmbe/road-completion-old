@@ -13,7 +13,8 @@ rm gdal-2.2.1.tar.gz
 # CONFIGURE HELP : ./configure --help
 
 cd gdal-2.2.1
-./configure && make && sudo make install
+./configure  --with-expat --with-sqlite3 --with-curl
+make && sudo make install
 
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
