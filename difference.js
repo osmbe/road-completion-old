@@ -3,47 +3,51 @@ var turf = require('@turf/turf'),
   normalize = require('@mapbox/geojson-normalize'),
   tilebelt = require('@mapbox/tilebelt');
 
-module.exports = function(tileLayers, tile, done) {
+module.exports = function(data, tile, writeData, done) {
+  
+  // concat feature classes and normalize data
+  var refRoads = normalize(data.ref.ref);
+  var osmData = normalize(data.osm.osm);
 
-  console.log("something");
+  var refDeltas = turf.featureCollection([]);
 
-  // // concat feature classes and normalize data
-  // var tigerRoads = normalize(tileLayers.tiger.tiger20062014);
-  // var osmData = normalize(tileLayers.osmdata.migeojson);
+  // filter out roads that are shorter than 30m and have no name
+  if (refRoads && osmData){
 
-  // // filter out roads that are shorter than 30m and have no name
-  // tigerRoads.features.forEach(function(road, i) {
-  //   if (filter(road)) tigerRoads.features.splice(i,1);
-  // });
+    console.log("data, yeah!")
 
-  // // clip features to tile
-  // osmData = clip(osmData, tile);
-  // tigerRoads = clip(tigerRoads, tile);
-  // osmData = normalize(flatten(osmData));
-  // tigerRoads = normalize(flatten(tigerRoads));
+    refRoads.features.forEach(function(road, i) {
+      if (filter(road)) refRoads.features.splice(i,1);
+    });
 
-  // // buffer streets
-  // var streetBuffers = turf.featureCollection([]);
-  // streetBuffers.features = osmData.features.map(function(f){
-  //   if (f.properties.highway) {
-  //     return turf.buffer(road, 20, 'meters').features[0];
-  //   }
-  // });
-  // streetBuffers = normalize(turf.merge(streetBuffers));
+    // clip features to tile
+    osmData = clip(osmData, tile);
+    refRoads = clip(refRoads, tile);
+    osmData = normalize(flatten(osmData));
+    refRoads = normalize(flatten(refRoads));
 
-  // erase street buffer from tiger lines
-  var tigerDeltas = turf.featurecollection([]);
+    // buffer streets
+    var streetBuffers = turf.featureCollection([]);
+    streetBuffers.features = osmData.features.map(function(f){
+      return turf.buffer(f.geometry, 20, 'meters').features[0];
+    });
+    streetBuffers = normalize(turf.union(streetBuffers.features.map(function(f){
+      return f.geometry;
+    })));
 
-  // if (tigerRoads && streetBuffers) {
-  //   tigerRoads.features.forEach(function(tigerRoad){
-  //     streetBuffers.features.forEach(function(streetsRoad){
-  //       var roadDiff = turf.erase(tigerRoad, streetsRoad);
-  //       if(roadDiff && !filter(roadDiff)) tigerDeltas.features.push(roadDiff);
-  //     });
-  //   });
-  // }
+    // erase street buffer from tiger lines
 
-  done(null, tigerDeltas);
+    if (refRoads && streetBuffers) {
+      refRoads.features.forEach(function(refRoad){
+        streetBuffers.features.forEach(function(streetsRoad){
+            var roadDiff = turf.erase(refRoad, streetsRoad);
+            if(roadDiff && !filter(roadDiff)) tigerDeltas.features.push(roadDiff);
+        });
+      });
+    }
+  }
+
+  done(null, refDeltas);
 };
 
 function clip(lines, tile) {

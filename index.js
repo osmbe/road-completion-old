@@ -17,7 +17,7 @@ var opts = {
       layers: ["ref"]
     }
   ],
-  map: __dirname + '/count.js'
+  map: __dirname + '/difference.js'
 };
 
 var numFeatures = 0;
