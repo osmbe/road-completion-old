@@ -25,5 +25,5 @@ if [ ! -f ./data/wegsegment.geojson ]; then
 fi
 
 #convert to vectortiles, don't redo wegsegment if already exists
-[ -f ./data/wegenregister.mbtiles ] || tippecanoe -f -o ./data/wegenregister.mbtiles ./data/wegsegment.geojson
-tippecanoe -o ./data/antwerp.mbtiles ./data/antwerp.geojson -l osm -f
+[ -f ./data/wegenregister.mbtiles ] || tippecanoe -f -o ./data/wegenregister.mbtiles ./data/wegsegment.geojson -l ref -pf -pk
+tippecanoe -o ./data/antwerp.mbtiles ./data/antwerp.geojson -l osm -f -pf -pk

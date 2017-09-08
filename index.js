@@ -8,7 +8,13 @@ var opts = {
   sources: [
     {
       name: 'osm',
-      mbtiles: __dirname + '/data/antwerp.mbtiles'
+      mbtiles: __dirname + '/data/antwerp.mbtiles',
+      layers: ["osm"]
+    },
+    {
+      name: 'ref',
+      mbtiles: __dirname + '/data/wegenregister.mbtiles',
+      layers: ["ref"]
     }
   ],
   map: __dirname + '/count.js'
