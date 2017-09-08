@@ -1,36 +1,35 @@
 var tileReduce = require('@mapbox/tile-reduce');
 var turf = require('@turf/turf');
-var bbox = [4293,6022,14];
+var bbox = [4.2881011962890625,51.14230962196141,4.5298004150390625,51.28296416385857];
 
 //var area = JSON.parse(argv.area);
 var opts = {
-  zoom: 15,
+  zoom: 14,
   sources: [
     {
-      name: 'osmdata',
-      url: __dirname + '/data/antwerp.mbtiles',
-      layers: ['osm']
-    },
-    {
-      name: 'wegenregister',
-      url: __dirname + '/data/wegenregister.mbtiles',
-      layers: ['wegenregister']
+      name: 'osm',
+      mbtiles: __dirname + '/data/antwerp.mbtiles'
     }
   ],
-  map: __dirname + '/difference.js',
-  bbox: bbox
+  map: __dirname + '/count.js'
 };
 
+var numFeatures = 0;
 var diff = turf.featureCollection([]);
-
-console.log(diff);
-
 tileReduce(opts).on('reduce', function(num) {
-  diff.features = diff.features.concat(result.features);
+  //diff.features = diff.features.concat(result.features);
+  //console.log(num);
+  numFeatures += num;
+})
+.on('start', function () {
+  console.log('starting');
+})
+.on('map', function (tile, workerId) {
+  //console.log('about to process ' + JSON.stringify(tile) +' on worker '+workerId);
 })
 .on('error', function(err){
   throw err;
 })
 .on('end', function() {
-  console.log(JSON.stringify(diff));
+  console.log('Features total: %d', numFeatures);
 });
