@@ -27,21 +27,29 @@ module.exports = function(data, tile, writeData, done) {
     refRoads = normalize(flatten(refRoads));
 
     // buffer streets
-    var streetBuffers = turf.featureCollection([]);
-    streetBuffers.features = osmData.features.map(function(f){
-      return turf.buffer(f.geometry, 20, 'meters').features[0];
+    var streetBuffers = osmData.features.map(function(f){
+      var buffer = turf.buffer(f.geometry, 20, 'meters');
+      //console.log(buffer);
+      return buffer;
     });
-    streetBuffers = normalize(turf.union(streetBuffers.features.map(function(f){
-      return f.geometry;
-    })));
+
+    var newStreetBuffers = [];
+    for(var i = 0; i < streetBuffers.length; i++){
+      if (streetBuffers[i]) {
+        newStreetBuffers.push(streetBuffers[i]);
+      }
+    }
+    streetBuffers = newStreetBuffers;
+
+    streetBuffers = normalize(turf.union(streetBuffers[0], streetBuffers[1]));
 
     // erase street buffer from tiger lines
 
     if (refRoads && streetBuffers) {
       refRoads.features.forEach(function(refRoad){
         streetBuffers.features.forEach(function(streetsRoad){
-            var roadDiff = turf.erase(refRoad, streetsRoad);
-            if(roadDiff && !filter(roadDiff)) tigerDeltas.features.push(roadDiff);
+            var roadDiff = turf.difference(refRoad, streetsRoad);
+            if(roadDiff && !filter(roadDiff)) refDeltas.features.push(roadDiff);
         });
       });
     }
