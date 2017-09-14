@@ -20,12 +20,9 @@ var opts = {
   map: __dirname + '/difference.js'
 };
 
-var numFeatures = 0;
 var diff = turf.featureCollection([]);
-tileReduce(opts).on('reduce', function(num) {
-  //diff.features = diff.features.concat(result.features);
-  //console.log(num);
-  numFeatures += num;
+tileReduce(opts).on('reduce', function(arg1) {
+  diff.features = diff.features.concat(arg1.features);
 })
 .on('start', function () {
   console.log('starting');
@@ -37,5 +34,5 @@ tileReduce(opts).on('reduce', function(num) {
   throw err;
 })
 .on('end', function() {
-  console.log('Features total: %d', numFeatures);
+  console.log(JSON.stringify(diff));
 });

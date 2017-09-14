@@ -41,10 +41,12 @@ module.exports = function(data, tile, writeData, done) {
     }
     streetBuffers = newStreetBuffers;
 
-    streetBuffers = normalize(turf.union(streetBuffers[0], streetBuffers[1]));
+    var merged = streetBuffers[0];
+    for (var i = 1; i < streetBuffers.length; i++) {
+      merged = turf.union(merged, streetBuffers[i]);
+    }
 
-    // erase street buffer from tiger lines
-
+    streetBuffers = normalize(merged);
     if (refRoads && streetBuffers) {
       refRoads.features.forEach(function(refRoad){
         streetBuffers.features.forEach(function(streetsRoad){
@@ -55,7 +57,7 @@ module.exports = function(data, tile, writeData, done) {
     }
   }
 
-  done(null, refDeltas);
+  done(null, refDeltas, streetBuffers, refRoads, osmData);
 };
 
 function clip(lines, tile) {
