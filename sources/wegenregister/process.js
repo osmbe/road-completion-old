@@ -1,8 +1,8 @@
 var geojsonTransform = require("../../geojson-transform");
 
 var opts = {
-  source: "C:\\work\\osmbe\\road-completion-data\\wegenregister.geojson",
-  target: "C:\\work\\osmbe\\road-completion-data\\wegenregister-transformed.geojson"
+  source: "../../data/wegsegment.geojson",
+  target: "../../data/wegsegment-transformed.geojson"
 };
 
 geojsonTransform.transform(opts.source, opts.target, function(p) {
