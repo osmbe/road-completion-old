@@ -21,6 +21,7 @@
     "@mapbox/tilebelt": "^1.0.1",
     "@turf/turf": "^3.14.3",
     "geojson-flatten": "^0.2.1",
+    "geojson-stream": "0.0.1",
     "write-data": "^1.0.0"
   }
 }
