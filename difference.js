@@ -30,16 +30,8 @@ module.exports = function(data, tile, writeData, done) {
     var streetBuffers = osmData.features.map(function(f){
       var buffer = turf.buffer(f.geometry, 20, 'meters');
       //console.log(buffer);
-      return buffer;
+      if (buffer) return buffer;
     });
-
-    var newStreetBuffers = [];
-    for(var i = 0; i < streetBuffers.length; i++){
-      if (streetBuffers[i]) {
-        newStreetBuffers.push(streetBuffers[i]);
-      }
-    }
-    streetBuffers = newStreetBuffers;
 
     var merged = streetBuffers[0];
     for (var i = 1; i < streetBuffers.length; i++) {
