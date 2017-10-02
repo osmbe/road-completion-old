@@ -27,9 +27,6 @@ tileReduce(opts).on('reduce', function(arg1) {
 .on('start', function () {
   console.log('starting');
 })
-.on('map', function (tile, workerId) {
-  //console.log('about to process ' + JSON.stringify(tile) +' on worker '+workerId);
-})
 .on('error', function(err){
   throw err;
 })
