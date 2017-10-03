@@ -2,18 +2,19 @@ var tileReduce = require('@mapbox/tile-reduce');
 var turf = require('@turf/turf');
 var bbox = [4.2881011962890625,51.14230962196141,4.5298004150390625,51.28296416385857];
 
-//var area = JSON.parse(argv.area);
+var args = process.argv.slice(2);
+
 var opts = {
   zoom: 14,
   sources: [
     {
       name: 'osm',
-      mbtiles: __dirname + '/data/antwerp.mbtiles',
+      mbtiles: args[0],
       layers: ["osm"]
     },
     {
       name: 'ref',
-      mbtiles: __dirname + '/data/wegenregister.mbtiles',
+      mbtiles: args[1],
       layers: ["ref"]
     }
   ],

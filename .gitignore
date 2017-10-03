@@ -58,3 +58,11 @@ typings/
 .env
 
 data/
+*.mbtiles
+*.zip
+*.osm.pbf
+
+# exclude the raw data.
+sources/wegenregister/*.geojson
+sources/wegenregister/Wegen*
+sources/osm/*.geojson

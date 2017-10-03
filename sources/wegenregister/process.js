@@ -1,13 +1,21 @@
 var geojsonTransform = require("../../geojson-transform");
 
+var args = process.argv.slice(2);
+
 var opts = {
-  source: "../../data/wegsegment.geojson",
-  target: "../../data/wegsegment-transformed.geojson"
+  source: args[0], // "../../data/wegsegment.geojson",
+  target: args[1], //"../../data/wegsegment-transformed.geojson"
 };
 
+var i = 0;
 geojsonTransform.transform(opts.source, opts.target, function(p) {
     if (p.STATUS != 4) {
         return undefined;
+    }
+
+    i++;
+    if (i % 1000 == 0){
+        console.log("Processed " + i + " linestrings...");
     }
 
     if (p.WEGCAT == 'H') {
