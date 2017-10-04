@@ -1,6 +1,7 @@
 var tileReduce = require('@mapbox/tile-reduce');
 var turf = require('@turf/turf');
-var bbox = [4.2881011962890625,51.14230962196141,4.5298004150390625,51.28296416385857];
+var bbox = [2.098388671875,50.47848271564207,6.3775634765625,51.645294049305406];
+var fs = require('fs');
 
 var args = process.argv.slice(2);
 
@@ -24,13 +25,15 @@ var opts = {
 var diff = turf.featureCollection([]);
 tileReduce(opts).on('reduce', function(arg1) {
   diff.features = diff.features.concat(arg1.features);
+
+  fs.writeFile (args[2], JSON.stringify(diff));
 })
 .on('start', function () {
-  console.log('starting');
+
 })
 .on('error', function(err){
   throw err;
 })
 .on('end', function() {
-  console.log(JSON.stringify(diff));
+  fs.writeFile (args[2], JSON.stringify(diff));
 });
