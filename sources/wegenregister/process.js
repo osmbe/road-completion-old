@@ -27,13 +27,12 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
 
     if (p.WEGCAT == 'H') {
         transformed.highway = "motorway";
+    } else if (p.WEGCAT == 'L' ||
+         p.WEGCAT == 'L1' ||
+         p.WEGCAT == 'L2' ||
+         p.WEGCAT == 'L3') {
+         transformed.highway = "residential";
     }
-    // } else if (p.WEGCAT == 'L' ||
-    //     p.WEGCAT == 'L1' ||
-    //     p.WEGCAT == 'L2' ||
-    //     p.WEGCAT == 'L3') {
-    //     transformed.highway = "residential";
-    // }
 
     if (transformed.highway) {
         return transformed;
