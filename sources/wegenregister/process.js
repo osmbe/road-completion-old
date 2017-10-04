@@ -25,13 +25,11 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
         console.log("Processed " + i + " linestrings...");
     }
 
-    if (p.WEGCAT == 'H') {
-        transformed.highway = "motorway";
-    } else if (p.WEGCAT == 'L' ||
-         p.WEGCAT == 'L1' ||
-         p.WEGCAT == 'L2' ||
-         p.WEGCAT == 'L3') {
-         transformed.highway = "residential";
+    if (p.LSTRNM || p.RSTRNM) {
+        transformed.highway = "unclassified";
+        if (p.WEGCAT == 'H') {
+            transformed.highway = "motorway";
+        }
     }
 
     if (transformed.highway) {

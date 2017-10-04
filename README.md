@@ -15,25 +15,43 @@ git clone https://github.com/osmbe/road-completion.git
 
 cd road-completion
 
-sh scripts/install-dependencies.sh
-sh scripts/install-gdal.sh
-sh scripts/install-tippecanoe.sh
+sh install/install-dependencies.sh
+sh install/install-gdal.sh
+sh install/install-tippecanoe.sh
 ```
-
-Updates npm packages and run the _get-data_ that does a couple of things:
-
-- Downloads OSM-data for Antwerp.
-- Splits this into vector tiles using [tippecanoe](https://github.com/mapbox/tippecanoe): antwerp.mbtiles
-- Donwloads road data from the flemish government called 'wegenregister'.
-- Splits this also into vector tiles: wegenregister.mbtiles
 
 ```
 npm install
-npm run get-data
 ```
 
-## Run
+## Run comparison
+
+### OSM data
+
+To start you need to download and setup the OSM source data. To do this run:
 
 ```
-node index.js
+cd ./sources/osm/
+./get-data.sh
 ```
+
+This downloads Belgium, converts it to GeoJSON keeping the roads only and packages the results into an MBTILES file.
+
+### Reference data
+
+To run the comparison you also need to download and convert a reference dataset. Scripts to do this can be found in the ´´´sources´´´ folder. Let's start with _wegenregister_:
+
+```
+cd ./sources/wegenregister/
+./get-data.sh
+```
+
+This downloads a shapefile, converts it to GeoJSON, converts the attributes to OSM-tags and packages the result into an MBTILES file.
+
+### Compare
+
+```
+node index.js ./sources/osm/belgium.mbtiles ./sources/wegenregister/wegenregister/mbtiles output.geojson
+```
+
+This runs the comparison process on the OSM data using wegenregister as a reference. The output is writting to _output.geojson_ in this case.

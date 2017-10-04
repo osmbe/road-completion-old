@@ -9,4 +9,4 @@ ogr2ogr -f GeoJSON -select name,highway -where "highway is not null"  -nln osm_h
 
 #convert to vectortiles
 # TODO: test with zoom-level limits, we only need level 14.
-tippecanoe -o ./belgium.mbtiles ./belgium.geojson -l osm -f -pf -pk
+tippecanoe -o ./belgium.mbtiles ./belgium.geojson -l roads -f -pf -pk

@@ -9,14 +9,14 @@ var opts = {
   zoom: 14,
   sources: [
     {
-      name: 'osm',
+      name: 'source',
       mbtiles: args[0],
-      layers: ["osm"]
+      layers: ["roads"]
     },
     {
       name: 'ref',
       mbtiles: args[1],
-      layers: ["ref"]
+      layers: ["roads"]
     }
   ],
   map: __dirname + '/difference.js'

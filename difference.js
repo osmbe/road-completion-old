@@ -13,8 +13,8 @@ module.exports = function(data, tile, writeData, done) {
       var tileName = "" + tile[2] + "-" + tile[0] + "-" + tile[1];
 
       // concat feature classes and normalize data
-      var osmData = normalize(data.osm.osm);
-      var refRoads = normalize(data.ref.ref);
+      var osmData = normalize(data.source.roads);
+      var refRoads = normalize(data.ref.roads);
 
       //fs.writeFile ("/home/xivk/work/osmbe/road-completion/debug/osmdata-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(osmData));
       //fs.writeFile ("/home/xivk/work/osmbe/road-completion/debug/refroads-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(refRoads));
@@ -63,7 +63,7 @@ module.exports = function(data, tile, writeData, done) {
   }
   catch (e)
   {
-    console.log(e);
+    console.log("Could not process tile " + tileName + ": " + e.message);
   }
 
   done(null, refDeltas) ; //, refDeltas, streetBuffers, refRoads, osmData);
