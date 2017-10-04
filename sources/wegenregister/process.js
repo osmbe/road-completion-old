@@ -13,22 +13,30 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
         return undefined;
     }
 
+    var transformed = {};
+    for (var property in p) {
+        if (p.hasOwnProperty(property)) {
+            transformed["orginal:" + property] = p[property];
+        }
+    }
+
     i++;
     if (i % 1000 == 0){
         console.log("Processed " + i + " linestrings...");
     }
 
     if (p.WEGCAT == 'H') {
-        return {
-            highway: "motorway"
-        };
-    } else if (p.WEGCAT == 'L' ||
-        p.WEGCAT == 'L1' ||
-        p.WEGCAT == 'L2' ||
-        p.WEGCAT == 'L3') {
-        return {
-            highway: "residential"
-        };
+        transformed.highway = "motorway";
+    }
+    // } else if (p.WEGCAT == 'L' ||
+    //     p.WEGCAT == 'L1' ||
+    //     p.WEGCAT == 'L2' ||
+    //     p.WEGCAT == 'L3') {
+    //     transformed.highway = "residential";
+    // }
+
+    if (transformed.highway) {
+        return transformed;
     }
     return undefined;
 });
