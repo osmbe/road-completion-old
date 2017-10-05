@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OSMBE - Road Completion</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.3.4/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v4.3.4/build/ol.js"></script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      .map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      var attribution = new ol.control.Attribution({
+        collapsible: false
+      });
+
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM)
+          })
+        ],
+        controls: ol.control.defaults({attribution: false}).extend([attribution]),
+        target: 'map',
+        view: new ol.View({
+          center: [0, 0],
+          zoom: 2
+        })
+      });
+    </script>
+  </body>
+</html>
+
