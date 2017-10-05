@@ -13,16 +13,17 @@
       .map {
         height: 100%;
       }
+      .ol-attribution ul {
+        font-size: 1rem;
+      }
+      .ol-control button, .ol-attribution, .ol-scale-line-inner {
+        font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+      }
     </style>
   </head>
   <body>
     <div id="map" class="map"></div>
     <script>
-      var attribution = new ol.control.Attribution({
-        collapsible: false
-      });
-      var scaleLineControl = new ol.control.ScaleLine();
-
       var map = new ol.Map({
         layers: [
           new ol.layer.Tile({
@@ -31,7 +32,13 @@
             })
           })
         ],
-        controls: ol.control.defaults({attribution: false}).extend([attribution, scaleLineControl]),
+        controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: false
+          }
+        }).extend([
+          new ol.control.ScaleLine()
+        ]),
         target: 'map',
         view: new ol.View({
           center: ol.proj.fromLonLat([4.367, 50.853]),
