@@ -25,9 +25,6 @@
       var map = new ol.Map({
         layers: [
           new ol.layer.Tile({
-            source: new ol.source.OSM()
-          }),
-          new ol.layer.Tile({
             source: new ol.source.XYZ({
               url: 'https://api.mapbox.com/styles/v1/joostschouppe/cj8bepevu772i2rqwlw00rq4y/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiam9vc3RzY2hvdXBwZSIsImEiOiJjaWh2djF1c2owMmJrdDNtMWV2c2Rld3QwIn0.9zXJJWZ4rOcspyFIdEC3Rw'
             })
@@ -36,8 +33,8 @@
         controls: ol.control.defaults({attribution: false}).extend([attribution]),
         target: 'map',
         view: new ol.View({
-          center: [0, 0],
-          zoom: 2
+          center: ol.proj.fromLonLat([4.367, 50.853]),
+          zoom: 8
         })
       });
     </script>
