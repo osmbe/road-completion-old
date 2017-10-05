@@ -21,6 +21,7 @@
       var attribution = new ol.control.Attribution({
         collapsible: false
       });
+      var scaleLineControl = new ol.control.ScaleLine();
 
       var map = new ol.Map({
         layers: [
@@ -30,7 +31,7 @@
             })
           })
         ],
-        controls: ol.control.defaults({attribution: false}).extend([attribution]),
+        controls: ol.control.defaults({attribution: false}).extend([attribution, scaleLineControl]),
         target: 'map',
         view: new ol.View({
           center: ol.proj.fromLonLat([4.367, 50.853]),
