@@ -51,7 +51,7 @@ This downloads a shapefile, converts it to GeoJSON, converts the attributes to O
 ### Compare
 
 ```
-node index.js ./sources/osm/belgium.mbtiles ./sources/wegenregister/wegenregister/mbtiles output.geojson
+node index.js ./sources/osm/belgium.mbtiles ./sources/wegenregister/wegenregister.mbtiles output.geojson
 ```
 
 This runs the comparison process on the OSM data using wegenregister as a reference. The output is writting to _output.geojson_ in this case.
