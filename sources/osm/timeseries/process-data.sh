@@ -1,38 +1,38 @@
 if [ ! -f ./jaar2007.geojson ]; then
-  unzip ./jaar2007.geojson.gz
+  gunzip ./jaar2007.geojson.gz
 fi
 if [ ! -f ./jaar2008.geojson ]; then
-  unzip ./jaar2008.geojson.gz
+  gunzip ./jaar2008.geojson.gz
 fi
 if [ ! -f ./jaar2009.geojson ]; then
-  unzip ./jaar2009.geojson.gz
+  gunzip ./jaar2009.geojson.gz
 fi
 if [ ! -f ./jaar2010.geojson ]; then
-  unzip ./jaar2010.geojson.gz
+  gunzip ./jaar2010.geojson.gz
 fi
 if [ ! -f ./jaar2011.geojson ]; then
-  unzip ./jaar2011.geojson.gz
+  gunzip ./jaar2011.geojson.gz
 fi
 if [ ! -f ./jaar2012.geojson ]; then
-  unzip ./jaar2012.geojson.gz
+  gunzip ./jaar2012.geojson.gz
 fi
 if [ ! -f ./jaar2013.geojson ]; then
-  unzip ./jaar2013.geojson.gz
+  gunzip ./jaar2013.geojson.gz
 fi
 if [ ! -f ./jaar2014.geojson ]; then
-  unzip ./jaar2014.geojson.gz
+  gunzip ./jaar2014.geojson.gz
 fi
 if [ ! -f ./jaar2015.geojson ]; then
-  unzip ./jaar2015.geojson.gz
+  gunzip ./jaar2015.geojson.gz
 fi
 if [ ! -f ./jaar2015.geojson ]; then
-  unzip ./jaar2015.geojson.gz
+  gunzip ./jaar2015.geojson.gz
 fi
 if [ ! -f ./jaar2016.geojson ]; then
-  unzip ./jaar2016.geojson.gz
+  gunzip ./jaar2016.geojson.gz
 fi
 if [ ! -f ./jaar2017.geojson ]; then
-  unzip ./jaar2017.geojson.gz
+  gunzip ./jaar2017.geojson.gz
 fi
 
 
