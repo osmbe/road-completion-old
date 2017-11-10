@@ -66,3 +66,4 @@ data/
 sources/wegenregister/*.geojson
 sources/wegenregister/Wegen*
 sources/osm/*.geojson
+*.mbtiles-journal
