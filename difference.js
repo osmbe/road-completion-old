@@ -73,7 +73,6 @@ module.exports = function(data, tile, writeData, done) {
         }
       } else {
         refDeltas = refRoads;
-        console.log("test");
       }
 
       if (debugDir) {

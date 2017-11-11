@@ -5,6 +5,8 @@ var fs = require('fs');
 
 var args = process.argv.slice(2);
 
+var outputStream = fs.createWriteStream(args[2]);
+
 var opts = {
   zoom: 14,
   geoJson: {
@@ -50,18 +52,30 @@ var opts = {
   map: __dirname + '/difference.js'
 };
 
+var firstFeature = true;
 var diff = turf.featureCollection([]);
 tileReduce(opts).on('reduce', function(arg1) {
-  diff.features = diff.features.concat(arg1.features);
+  //diff.features = diff.features.concat(arg1.features);
 
   //fs.writeFile (args[2], JSON.stringify(diff));
+
+  for (var i = 0; i < arg1.features.length; i++) {
+    if (!firstFeature) {
+      outputStream.write(',');
+    }
+    firstFeature = false;
+    outputStream.write(JSON.stringify(arg1.features[i]));
+  }
 })
 .on('start', function () {
-
+  outputStream.write('{ "type": "FeatureCollection", "features": [');
 })
 .on('error', function(err){
   throw err;
 })
 .on('end', function() {
-  fs.writeFile (args[2], JSON.stringify(diff));
+  // fs.writeFile (args[2], JSON.stringify(diff));
+
+  outputStream.write('] }');
+  outputStream.end();
 });
