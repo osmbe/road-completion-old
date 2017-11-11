@@ -72,6 +72,7 @@ module.exports = function(data, tile, writeData, done) {
           });
         }
       } else {
+        console.log("Empty tile!");
         refDeltas = refRoads;
       }
 
