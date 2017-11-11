@@ -18,57 +18,61 @@ module.exports = function(data, tile, writeData, done) {
 
       // concat feature classes and normalize data
       var osmData = normalize(data.source.roads);
-      var refRoads = normalize(data.ref.roads);
+      if (osmData.feature.length > 0) {
+        var refRoads = normalize(data.ref.roads);
 
-      if (debugDir) {
-        fs.writeFile (debugDir + "osmdata-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(osmData));
-        fs.writeFile (debugDir + "refroads-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(refRoads));
-      }
+        if (debugDir) {
+          fs.writeFile (debugDir + "osmdata-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(osmData));
+          fs.writeFile (debugDir + "refroads-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(refRoads));
+        }
 
-      osmData = flatten(osmData);
-      refRoads = flatten(refRoads);
+        osmData = flatten(osmData);
+        refRoads = flatten(refRoads);
 
-      if (debugDir) {
-        fs.writeFile (debugDir + tileName + "-osmdata-flattened.json", JSON.stringify(osmData));
-        fs.writeFile (debugDir + tileName + "-refroads-flattened.json", JSON.stringify(refRoads));
-      }
-      
-      refRoads.features.forEach(function(road, i) {
-        if (filter(road)) refRoads.features.splice(i,1);
-      });
-
-      // buffer streets
-      var streetBuffers = osmData.features.map(function(f){
-        var buffer = turf.buffer(f.geometry, 20, 'meters');
-        if (buffer) return buffer;
-      });
-
-      if (debugDir) {
-        fs.writeFile (debugDir + "osmdata-buffered-" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(streetBuffers)));
-      }
-      var merged = streetBuffers[0];
-      for (var i = 1; i < streetBuffers.length; i++) {
-        merged = turf.union(merged, streetBuffers[i]);
-      }
-      
-      if (debugDir) {
-        fs.writeFile (debugDir + "osmdata-buffered-merged" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(merged)));
-      }
-
-      merged = turf.simplify(merged, 0.00001, false);
-
-      if (debugDir) {
-        fs.writeFile (debugDir + tileName + "-osmdata-buffered-merged-simplified.json", JSON.stringify(normalize(merged)));
-      }
-
-      streetBuffers = normalize(merged);
-      if (refRoads && streetBuffers) {
-        refRoads.features.forEach(function(refRoad){
-          streetBuffers.features.forEach(function(streetsRoad){
-              var roadDiff = turf.difference(refRoad, streetsRoad);
-              if(roadDiff && !filter(roadDiff)) refDeltas.features.push(roadDiff);
-          });
+        if (debugDir) {
+          fs.writeFile (debugDir + tileName + "-osmdata-flattened.json", JSON.stringify(osmData));
+          fs.writeFile (debugDir + tileName + "-refroads-flattened.json", JSON.stringify(refRoads));
+        }
+        
+        refRoads.features.forEach(function(road, i) {
+          if (filter(road)) refRoads.features.splice(i,1);
         });
+
+        // buffer streets
+        var streetBuffers = osmData.features.map(function(f){
+          var buffer = turf.buffer(f.geometry, 20, 'meters');
+          if (buffer) return buffer;
+        });
+
+        if (debugDir) {
+          fs.writeFile (debugDir + "osmdata-buffered-" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(streetBuffers)));
+        }
+        var merged = streetBuffers[0];
+        for (var i = 1; i < streetBuffers.length; i++) {
+          merged = turf.union(merged, streetBuffers[i]);
+        }
+        
+        if (debugDir) {
+          fs.writeFile (debugDir + "osmdata-buffered-merged" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(merged)));
+        }
+
+        merged = turf.simplify(merged, 0.00001, false);
+
+        if (debugDir) {
+          fs.writeFile (debugDir + tileName + "-osmdata-buffered-merged-simplified.json", JSON.stringify(normalize(merged)));
+        }
+
+        streetBuffers = normalize(merged);
+        if (refRoads && streetBuffers) {
+          refRoads.features.forEach(function(refRoad){
+            streetBuffers.features.forEach(function(streetsRoad){
+                var roadDiff = turf.difference(refRoad, streetsRoad);
+                if(roadDiff && !filter(roadDiff)) refDeltas.features.push(roadDiff);
+            });
+          });
+        }
+      } else {
+        refDeltas = refRoads;
       }
 
       if (debugDir) {
