@@ -1,4 +1,4 @@
-var tileReduce = require('@mapbox/tile-reduce');
+var tileReduce = require('./tile-reduce');
 var turf = require('@turf/turf');
 var bbox = [2.098388671875,50.47848271564207,6.3775634765625,51.645294049305406];
 var fs = require('fs');

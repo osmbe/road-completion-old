@@ -16,8 +16,6 @@ module.exports = function(data, tile, writeData, done) {
     {
       var tileName = "" + tile[2] + "-" + tile[0] + "-" + tile[1];
       
-      console.log(tileName);
-      
       // concat feature classes and normalize data
       var refRoads = normalize(data.ref.roads);
       if (data.source) {
