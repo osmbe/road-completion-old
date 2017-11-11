@@ -26,7 +26,7 @@ var diff = turf.featureCollection([]);
 tileReduce(opts).on('reduce', function(arg1) {
   diff.features = diff.features.concat(arg1.features);
 
-  fs.writeFile (args[2], JSON.stringify(diff));
+  //fs.writeFile (args[2], JSON.stringify(diff));
 })
 .on('start', function () {
 
