@@ -9,13 +9,13 @@ var opts = {
   zoom: 14,
   sources: [
     {
-      name: 'source',
-      mbtiles: args[0],
+      name: 'ref',
+      mbtiles: args[1],
       layers: ["roads"]
     },
     {
-      name: 'ref',
-      mbtiles: args[1],
+      name: 'source',
+      mbtiles: args[0],
       layers: ["roads"]
     }
   ],
