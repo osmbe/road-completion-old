@@ -18,7 +18,7 @@ module.exports = function(data, tile, writeData, done) {
 
       // concat feature classes and normalize data
       var osmData = normalize(data.source.roads);
-      if (osmData.feature.length > 0) {
+      if (osmData && osmData.features && osmData.features.length > 0) {
         var refRoads = normalize(data.ref.roads);
 
         if (debugDir) {
