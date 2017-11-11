@@ -15,11 +15,13 @@ module.exports = function(data, tile, writeData, done) {
     if (tile[2] == 14)
     {
       var tileName = "" + tile[2] + "-" + tile[0] + "-" + tile[1];
-
+      
+      console.log(tileName);
+      
       // concat feature classes and normalize data
-      var osmData = normalize(data.source.roads);
       var refRoads = normalize(data.ref.roads);
-      if (osmData && osmData.features && osmData.features.length > 0) {
+      if (data.source) {
+        var osmData = normalize(data.source.roads);
 
         if (debugDir) {
           fs.writeFile (debugDir + "osmdata-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(osmData));
@@ -72,8 +74,8 @@ module.exports = function(data, tile, writeData, done) {
           });
         }
       } else {
-        console.log("Empty tile!");
         refDeltas = refRoads;
+        console.log("test");
       }
 
       if (debugDir) {

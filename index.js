@@ -46,6 +46,7 @@ var opts = {
       layers: ["roads"]
     }
   ],
+  requireData: 'any',
   map: __dirname + '/difference.js'
 };
 
