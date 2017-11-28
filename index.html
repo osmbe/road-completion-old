@@ -13,13 +13,45 @@
       .map {
         height: 100%;
       }
+	  
+	  .overlay {
+		  position: absolute;
+		  z-index: 999;
+		  background: rgba(255,255,255,.8);
+		  border-radius: 4px;
+		  font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+		  margin: 0;
+		  padding: 10px;
+		  font-size: .7rem;
+		  line-height: 1.375em;
+		  color: #000;
+		  text-shadow: 0 0 2px #fff;
+		}
+		#info {
+		  top: 15px;
+		  right: 15px;
+		  width: 250px;
+		}
       .ol-control button, .ol-attribution, .ol-scale-line-inner {
         font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
       }
     </style>
   </head>
   <body>
-    <div id="map" class="map"></div>
+    <div id="map" class="map">
+	   <div id="info" class="overlay">
+        <strong>Road Completion Project</strong>
+        <div>Awesome project by <a href="http://www.osm.be/">OSM Belgium</a>.</div>
+        <p>
+          <strong>Documentation</strong><br>
+          <a href="https://wiki.openstreetmap.org/wiki/WikiProject_Belgium/Road_completion_project" target="_blank">More info </a> about this project on the wiki!
+        </p>
+        <p>
+          <strong>Getting starting</strong><br>
+          Instructions <a href="https://wiki.openstreetmap.org/wiki/WikiProject_Belgium/Road_completion_project/Instructions" target="_blank">here</a> on how to get started.
+        </p>
+      </div>
+	</div>
     <script>
       var zoom = 8;
       var center = [4.367, 50.853];
