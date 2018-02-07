@@ -3,9 +3,12 @@ var turf = require('@turf/turf'),
   normalize = require('@mapbox/geojson-normalize'),
   tilebelt = require('@mapbox/tilebelt'),
   fs = require('fs');
+  fx = require('mkdir-recursive');
 
 module.exports = function(data, tile, writeData, done) {
   var refDeltas = turf.featureCollection([]);
+  var streetBuffers = undefined;
+  var refRoads = undefined;
   var debugDir = "/home/xivk/work/osmbe/road-completion/debug/";
   if (!fs.existsSync(debugDir)) {
     debugDir = undefined;
@@ -14,55 +17,62 @@ module.exports = function(data, tile, writeData, done) {
   try {
     if (tile[2] == 14)
     {
-      var tileName = "" + tile[2] + "-" + tile[0] + "-" + tile[1];
+      var tileDir = tile[2] + "/" + tile[0] + "/";
+      var tileName = tile[1] + ".geojson";
+      var osmDataDir = debugDir + "osmdata/" + tileDir;
+      var refRoadsDir = debugDir + "refroads/" + tileDir;
+      var osmBuffersDir = debugDir + "osmbuffers/" + tileDir;
+      var diffsDir = debugDir + "diffs/" + tileDir;
+      if (debugDir) {
+        if (!fs.existsSync(osmDataDir)){
+          fx.mkdirSync(osmDataDir);
+        }
+        if (!fs.existsSync(refRoadsDir)){
+          fx.mkdirSync(refRoadsDir);
+        }
+        if (!fs.existsSync(osmBuffersDir)){
+          fx.mkdirSync(osmBuffersDir);
+        }
+        if (!fs.existsSync(diffsDir)){
+          fx.mkdirSync(diffsDir);
+        }
+      }
       
       // concat feature classes and normalize data
-      var refRoads = normalize(data.ref.roads);
+      refRoads = normalize(data.ref.roads);
       if (data.source) {
         var osmData = normalize(data.source.roads);
 
         if (debugDir) {
-          fs.writeFile (debugDir + "osmdata-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(osmData));
-          fs.writeFile (debugDir + "refroads-normalized-" +  tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(refRoads));
+          fs.writeFile (osmDataDir + tileName, JSON.stringify(osmData));
+          fs.writeFile (refRoadsDir + tileName, JSON.stringify(refRoads));
         }
 
         osmData = flatten(osmData);
         refRoads = flatten(refRoads);
-
-        if (debugDir) {
-          fs.writeFile (debugDir + tileName + "-osmdata-flattened.json", JSON.stringify(osmData));
-          fs.writeFile (debugDir + tileName + "-refroads-flattened.json", JSON.stringify(refRoads));
-        }
         
         refRoads.features.forEach(function(road, i) {
           if (filter(road)) refRoads.features.splice(i,1);
         });
 
         // buffer streets
-        var streetBuffers = osmData.features.map(function(f){
+        streetBuffers = osmData.features.map(function(f){
           var buffer = turf.buffer(f.geometry, 20, 'meters');
           if (buffer) return buffer;
         });
 
-        if (debugDir) {
-          fs.writeFile (debugDir + "osmdata-buffered-" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(streetBuffers)));
-        }
         var merged = streetBuffers[0];
         for (var i = 1; i < streetBuffers.length; i++) {
           merged = turf.union(merged, streetBuffers[i]);
         }
-        
-        if (debugDir) {
-          fs.writeFile (debugDir + "osmdata-buffered-merged" + tile[0] + "-" + tile[1] + "-" + tile[2] +".json", JSON.stringify(normalize(merged)));
-        }
 
         merged = turf.simplify(merged, 0.00001, false);
+        streetBuffers = normalize(merged);
 
         if (debugDir) {
-          fs.writeFile (debugDir + tileName + "-osmdata-buffered-merged-simplified.json", JSON.stringify(normalize(merged)));
+          fs.writeFile (osmBuffersDir + tileName, JSON.stringify(merged));
         }
 
-        streetBuffers = normalize(merged);
         if (refRoads && streetBuffers) {
           refRoads.features.forEach(function(refRoad){
             streetBuffers.features.forEach(function(streetsRoad){
@@ -76,7 +86,7 @@ module.exports = function(data, tile, writeData, done) {
       }
 
       if (debugDir) {
-        fs.writeFile (debugDir + tileName + "-diff.json", JSON.stringify(normalize(refDeltas)));
+        fs.writeFile (diffsDir + tileName, JSON.stringify(normalize(refDeltas)));
       }
     }
   }
@@ -85,7 +95,12 @@ module.exports = function(data, tile, writeData, done) {
     console.log("Could not process tile " + tileName + ": " + e.message);
   }
 
-  done(null, refDeltas) ; //, refDeltas, streetBuffers, refRoads, osmData);
+  done(null, { 
+    diffs: refDeltas,
+    buffers: streetBuffers,
+    refs: refRoads,
+    osm: osmData
+   });
 };
 
 function clip(lines, tile) {

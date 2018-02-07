@@ -62,9 +62,14 @@ data/
 *.zip
 *.osm.pbf
 
+install/gdal*
+
 # exclude the raw data.
 sources/wegenregister/*.geojson
 sources/wegenregister/Wegen*
 sources/osm/*.geojson
 *.mbtiles-journal
 results/wegenregister/timeseries/*.geojson
+
+# exlude the results.
+*.geojson
