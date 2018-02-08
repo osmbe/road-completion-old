@@ -2,7 +2,8 @@ var turf = require('@turf/turf'),
   flatten = require('geojson-flatten'),
   normalize = require('@mapbox/geojson-normalize'),
   tilebelt = require('@mapbox/tilebelt'),
-  fs = require('fs');
+  fs = require('fs'),
+  hashF = require('object-hash'),
   fx = require('mkdir-recursive');
 
 module.exports = function(data, tile, writeData, done) {
@@ -83,6 +84,20 @@ module.exports = function(data, tile, writeData, done) {
         }
       } else {
         refDeltas = refRoads;
+      }
+
+      // add hashes as id's and tile-id's.
+      for (var f = 0; f < refDeltas.features.length; f++) {
+        var feature = refDeltas.features[f];
+        if (feature &&
+            feature.geometry) {
+          var hash = hashF(feature.geometry);
+
+          feature.properties.id = "" + hash;
+          feature.properties.tile_z = tile[2];
+          feature.properties.tile_x = tile[0];
+          feature.properties.tile_y = tile[1];
+        }
       }
 
       if (debugDir) {

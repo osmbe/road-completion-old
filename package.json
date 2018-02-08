@@ -23,6 +23,7 @@
     "geojson-flatten": "^0.2.1",
     "geojson-stream": "0.0.1",
     "mkdir-recursive": "^0.4.0",
+    "object-hash": "^1.2.0",
     "sqlite3": "^3.1.13",
     "write-data": "^1.0.0"
   }

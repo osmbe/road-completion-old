@@ -1,3 +1,5 @@
+// import { tag } from "@turf/turf";
+
 var geojsonTransform = require("../../geojson-transform");
 
 var args = process.argv.slice(2);
@@ -30,7 +32,15 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
         if (p.WEGCAT == 'H') {
             transformed.highway = "motorway";
         }
+
+        if (p.LSTRNM == p.RSTRNM) {
+            transformed.name = p.LSTRNM;
+        } else {
+            transformed.name = p.LSTRNM + " - " + p.RSTRNM;
+        }
     }
+
+    transformed.source = "wegenregister";
 
     if (transformed.highway) {
         return transformed;

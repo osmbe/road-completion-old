@@ -1,0 +1,12 @@
+{
+    "name": "Diffs layer", 
+    "format": "pbf", 
+    "description": "Diffs layer", 
+    "json": "{\"vector_layers\": [ { \"id\": \"diffs\", \"description\": \"\", \"minzoom\": 0, \"maxzoom\": 14, \"fields\": {\"highway\": \"String\", \"id\": \"String\", \"name\": \"String\", \"orginal:BEGINORG\": \"String\", \"orginal:BEGINTIJD\": \"String\", \"orginal:BEHEER\": \"String\", \"orginal:B_WK_OIDN\": \"Number\", \"orginal:E_WK_OIDN\": \"Number\", \"orginal:LBLBEHEER\": \"String\", \"orginal:LBLBGNORG\": \"String\", \"orginal:LBLMETHOD\": \"String\", \"orginal:LBLMORF\": \"String\", \"orginal:LBLSTATUS\": \"String\", \"orginal:LBLTGBEP\": \"String\", \"orginal:LBLWEGCAT\": \"String\", \"orginal:LSTRNM\": \"String\", \"orginal:LSTRNMID\": \"Number\", \"orginal:METHODE\": \"Number\", \"orginal:MORF\": \"Number\", \"orginal:OPNDATUM\": \"String\", \"orginal:RSTRNM\": \"String\", \"orginal:RSTRNMID\": \"Number\", \"orginal:STATUS\": \"Number\", \"orginal:TGBEP\": \"Number\", \"orginal:WEGCAT\": \"String\", \"orginal:WS_GIDN\": \"String\", \"orginal:WS_OIDN\": \"Number\", \"orginal:WS_UIDN\": \"String\", \"source\": \"String\", \"tile_x\": \"Number\", \"tile_y\": \"Number\", \"tile_z\": \"Number\"} } ] }", 
+    "bounds": "2.564930,50.646004,5.925568,51.500007", 
+    "minzoom": "0", 
+    "version": "2", 
+    "maxzoom": "14", 
+    "type": "overlay", 
+    "center": "2.933350,51.227527,14"
+}
