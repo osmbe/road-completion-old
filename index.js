@@ -77,7 +77,7 @@ var groterWechel = {
 
 var opts = {
   zoom: 14,
-  geoJson: groterWechel,
+  //geoJson: groterWechel,
   sources: [
     {
       name: 'ref',
