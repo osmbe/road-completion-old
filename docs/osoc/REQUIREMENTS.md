@@ -37,7 +37,8 @@ Document all the things.
 # How would we do this ?
 
 Update this to Urbis.
-  - 
+  - Extract UrbisAdm map files and compare the Urb_STREET_AXIS to OSM's ways to check if they match or are very close to matching(since it might be impossible to have 100% accuracy).
+    This method would/should work for street/way matching.
 Update this to take into account tags/attributes.
   -
 Spit out statistics and metrics about quality.
