@@ -64,11 +64,11 @@ Document all the things.
   -
 ###### We make a fancy way of displaying the problem.
   - In order to make a **user-friendly** tool, we need to have a clear vision of the map (we have to see the difference between the normal map & the issues).
-    - The issues will be highlighted.
+    - Visually, the issues will be highlighted on the map.
+    - When we will click on the issue, it will display a clear summary which contains the tags that are different (the summary is actually a sidebar that is displayed at the map's right side).
+      - There will be an edit button that will redirect mappers to the edit tool.
 ###### We make a way for users to set status of an issue.
   -
 ###### We make a way for users to convert an issue to a note.
   - We make a way for an issue to close, after the note is closed.
-    
-
-
+    -
