@@ -1,0 +1,99 @@
+{
+  "_args": [
+    [
+      "mbtiles@0.9.0",
+      "/Users/jodideloof/Desktop/osoc/road-completion"
+    ]
+  ],
+  "_from": "mbtiles@0.9.0",
+  "_id": "mbtiles@0.9.0",
+  "_inBundle": false,
+  "_integrity": "sha1-UvoDUrig4ZftClY6TOGSLflz19Y=",
+  "_location": "/mbtiles",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "mbtiles@0.9.0",
+    "name": "mbtiles",
+    "escapedName": "mbtiles",
+    "rawSpec": "0.9.0",
+    "saveSpec": null,
+    "fetchSpec": "0.9.0"
+  },
+  "_requiredBy": [
+    "/@mapbox/tile-reduce"
+  ],
+  "_resolved": "https://registry.npmjs.org/mbtiles/-/mbtiles-0.9.0.tgz",
+  "_spec": "0.9.0",
+  "_where": "/Users/jodideloof/Desktop/osoc/road-completion",
+  "author": {
+    "name": "Mapbox",
+    "url": "https://www.mapbox.com"
+  },
+  "bugs": {
+    "url": "https://github.com/mapbox/node-mbtiles/issues"
+  },
+  "contributors": [
+    {
+      "name": "Tom MacWright",
+      "email": "tmcw"
+    },
+    {
+      "name": "Will White",
+      "email": "willwhite"
+    },
+    {
+      "name": "Dane Springmeyer",
+      "email": "springmeyer"
+    },
+    {
+      "name": "Young Hahn",
+      "email": "yhahn"
+    },
+    {
+      "name": "Konstantin Käfer",
+      "email": "kkaefer"
+    },
+    {
+      "name": "Andrew Pendleton",
+      "email": "apendleton"
+    }
+  ],
+  "dependencies": {
+    "d3-queue": "~2.0.3",
+    "sphericalmercator": "~1.0.1",
+    "sqlite3": "3.x",
+    "tiletype": "0.1.x"
+  },
+  "description": "Utilities and tilelive integration for the MBTiles format.",
+  "devDependencies": {
+    "eslint": "~1.00.0",
+    "eslint-config-unstyled": "^1.1.0",
+    "tape": "~3.0.0"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "homepage": "https://github.com/mapbox/node-mbtiles#readme",
+  "keywords": [
+    "map",
+    "mbtiles"
+  ],
+  "licenses": [
+    {
+      "type": "BSD"
+    }
+  ],
+  "main": "./lib/mbtiles",
+  "name": "mbtiles",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mapbox/node-mbtiles.git"
+  },
+  "scripts": {
+    "test": "eslint lib && tape test/*.js"
+  },
+  "url": "http://github.com/mapbox/node-mbtiles",
+  "version": "0.9.0"
+}

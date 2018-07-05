@@ -34,6 +34,16 @@ We make a map and display the problems.
 
 Document all the things.
 
+# How would we do this ?
+
+Update this to Urbis.
+  - 
+Update this to take into account tags/attributes.
+  -
+Spit out statistics and metrics about quality.
+  -
+We make a way to feedback false positives.
+  -
 
 
 
