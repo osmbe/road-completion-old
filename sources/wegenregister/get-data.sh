@@ -12,12 +12,4 @@ fi
 
 #convert wegenregister to geojson
 if [ ! -f ./wegsegment.geojson ]; then
-ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./wegsegment.geojson ./Wegenregister_SHAPE_20180621/Shapefile/Wegsegment.shp
-fi
-
-#convert to OSM-tags
-node process.js ./wegsegment.geojson ./wegsegment-transformed.geojson
-
-#convert to vectortiles
-# TODO: test with zoom-level limits, we only need level 14.
-tippecanoe -f -o ./wegenregister.mbtiles ./wegsegment-transformed.geojson -l roads -pf -pk
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./wegsegment.geojson ./Wegenregister_SHAPE_20180621/Shape
