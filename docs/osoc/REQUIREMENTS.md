@@ -52,15 +52,15 @@ Document all the things.
   - *Then we could add those tags to the geojson file. Like that we have the conversion of the .shp file from UrbIS into a compatible geojson file with appropriate tags.*
 #### Spit out statistics and metrics about quality.
   - Statistics should contain:
-	  -	**main comparison**: street count osm & urbis, % completion
+	  -	**Main comparison**: street count osm & urbis, % completion
 	  -	**Advanced comparison**: detailed statistics for osm & urbis data. 
 #### We make a way to feedback false positives.
-  -
+  - Either by having the user write a note or by giving the user to report a false positive inside the comparison tool, false positives will not be taken into account in further comparisons.
 ## Making a map & displaying the problems
 
 #### We make a way for users to login.
-  - For this, we're gonna use the actual OSM's account authentication tool (this already contains OAuth mechanism).
-    - You can find more informations about OAuth [here](https://wiki.openstreetmap.org/wiki/OAuth).
+  - For this, we're gonna use the actual OSM account authentication tool (this already contains OAuth mechanism).
+    - You can find more information about OAuth [here](https://wiki.openstreetmap.org/wiki/OAuth).
 #### We make a way to log who did what.
   - when changing the status of an issue:
 	  - save change to database
