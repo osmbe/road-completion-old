@@ -88,4 +88,8 @@ Document all the things.
 	- convert issue to a note
 #### We make a way for users to convert an issue to a note.
   - We make a way for an issue to close, after the note is closed.
+
+## Order in which the program works
+  - User logs in with OSM account.
+  - 
     
