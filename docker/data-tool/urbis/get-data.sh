@@ -18,8 +18,9 @@ fi
 #convert to OSM-tags
 #node process.js ./wegsegment.geojson ./wegsegment-transformed.geojson
 
-cp ./wwegsegment.geojson ../../sharedfolder
+cp ./wegsegment.geojson ../../sharedfolder
 
 #convert to vectortiles
 # TODO: test with zoom-level limits, we only need level 14.
 #tippecanoe -f -o ./wegenregister.mbtiles ./wegsegment.geojson -l roads -pf -pk
+
