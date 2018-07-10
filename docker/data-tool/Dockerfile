@@ -37,3 +37,4 @@ RUN  apt-get update \
 RUN sudo apt-get update
 RUN sudo apt-get install -y osmosis
 
+ENTRYPOINT cd ./road-completion/osm-brussels && sh get-data.sh && cd ../urbis && sh get-data.sh 
