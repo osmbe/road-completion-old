@@ -91,7 +91,22 @@ module.exports = function(data, tile, writeData, done) {
         var feature = refDeltas.features[f];
         if (feature &&
             feature.geometry) {
-          var hash = hashF(feature.geometry);
+
+            // 07/09** I think we could hash the tiles too (property part of feature)
+            //hash = hashF(feature);
+            //hash = hashF(feature.geometry); 
+            
+            // 07/10** 1st try to make the hashing system
+            //get the coordinates from the geojson files
+            
+            var coords;
+            var hash;
+
+            for(var c = 0; c < feature.geometry.coordinates.length; c++){
+              coords += feature.geometry.coordinates[c];
+            }
+            hash = getNewHash( coords, feature.properties);
+            if(hash === null || hash === "") hash = hashF(feature);
 
           feature.properties.id = "" + hash;
           feature.properties.tile_z = tile[2];
@@ -144,3 +159,21 @@ function filter(road) {
     return false;
   }
 }
+
+// antoine's tries
+function getNewHash(featcoords, featproperties) {
+  var hashresult = "";
+  let hashnb = 17;
+  try {
+      hashnb *= 23 + featcoords;
+  
+      for(let i = 0; i < featproperties.length;i++) {
+        hashnb = (((hashnb << 5) - hashnb ) + featproperties.charCodeAt(i)) & 0xFFFFFFFF;
+      }
+      hashnb = Math.round(hashnb);
+      hashresult = hashnb.toString();
+      return hashresult;
+  }catch(e){
+    return null;
+  }
+} 
