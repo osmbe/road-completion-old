@@ -99,14 +99,25 @@ module.exports = function(data, tile, writeData, done) {
             // 07/10** 1st try to make the hashing system
             //get the coordinates from the geojson files
             
+            NotConfirmedHashCodeException.prototype = Object.create(Error.prototype);
+            NotConfirmedHashCodeException.prototype.name = "NotConfirmedHashCodeException";
+            NotConfirmedHashCodeException.prototype.constructor = NotConfirmedHashCodeException;
             var coords;
             var hash;
 
-            for(var c = 0; c < feature.geometry.coordinates.length; c++){
-              coords += feature.geometry.coordinates[c];
+            try {
+              for(var c = 0; c < feature.geometry.coordinates.length; c++){
+                coords += feature.geometry.coordinates[c];
+              }
+              hash = getNewHash( coords, feature.properties);
+              if(hash === null || hash === "") {
+                throw new NotConfirmedHashCodeException();
             }
-            hash = getNewHash( coords, feature.properties);
-            if(hash === null || hash === "") hash = hashF(feature);
+
+            }catch(err) {
+                err = new NotConfirmedHashCodeException("Impossible to hash coordinates and properties");
+                alert(err.toString());
+              }
 
           feature.properties.id = "" + hash;
           feature.properties.tile_z = tile[2];
@@ -162,6 +173,10 @@ function filter(road) {
 
 // antoine's tries
 function getNewHash(featcoords, featproperties) {
+  NotNewHashCodeGenerationException.prototype = Object.create(Error.prototype);
+  NotNewHashCodeGenerationException.prototype.name = "NotNewHashCodeGenerationException";
+  NotNewHashCodeGenerationException.prototype.constructor = NotNewHashCodeGenerationException;
+
   var hashresult = "";
   let hashnb = 17;
   try {
@@ -173,7 +188,19 @@ function getNewHash(featcoords, featproperties) {
       hashnb = Math.round(hashnb);
       hashresult = hashnb.toString();
       return hashresult;
-  }catch(e){
-    return null;
+  }catch(err){
+    err = new NotNewHashCodeGenerationException("Data are invalid or hashing process doesn't work please report to getNewHash function");
+    alert(err.toString());
   }
-} 
+}
+
+function NotNewHashCodeGenerationException(message) {
+    this.message = message;
+    if("captureStackTrace" in Error) Error.captureStackTrace(this, NotNewHashCodeGenerationException);
+    else this.stack = (new Error()).stack;
+  }
+function NotConfirmedHashCodeException(message) {
+    this.message = message;
+    if("captureStackTrace" in Error) Error.captureStackTrace(this, NotConfirmedHashCodeException);
+    else this.stack = (new Error()).stack;
+  }
