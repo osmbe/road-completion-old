@@ -15,3 +15,4 @@ RUN npm install
 # Bundle app source
 COPY . .
 RUN mkdir sharedfolder
+ENTRYPOINT sh compare.sh
