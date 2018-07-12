@@ -1,4 +1,5 @@
-file="/Users/jodideloof/Documents/osoc/road-completion/docker/host-share"
+#file="/root/road-completion/docker/host-share"
+file="$(pwd)/host-share"
 
 rm -f $file/output.geojson
 rm -f $file/brussels.mbtiles
