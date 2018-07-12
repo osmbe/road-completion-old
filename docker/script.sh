@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #file="/root/road-completion/docker/host-share"
+=======
+>>>>>>> 81848dc30687b8fd1d768233726f8af7c1f8dd54
 file="$(pwd)/host-share"
 
 rm -f $file/output.geojson
