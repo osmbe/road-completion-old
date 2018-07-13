@@ -67,7 +67,7 @@ module.exports = function(data, tile, writeData, done) {
           merged = turf.union(merged, streetBuffers[i]);
         }
 
-        merged = turf.simplify(merged, 0.00001, false);
+        merged = turf.simplify(merged, 0.000001, false);
         streetBuffers = normalize(merged);
 
         if (debugDir) {
