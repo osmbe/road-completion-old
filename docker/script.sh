@@ -1,3 +1,5 @@
+#!/bin/bash
+
 file="$(pwd)/host-share"
 
 rm -f $file/output.geojson
