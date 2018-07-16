@@ -4,9 +4,9 @@ file="$(pwd)/host-share"
 
 rm -f $file/output.geojson
 rm -f $file/brussels.mbtiles
-rm -f $file/wegenregister.mbtiles
+rm -f $file/UrbAdm_STREET_AXIS.mbtiles
 rm -f $file/brussels.geojson
-rm -f $file/wegsegment.geojson
+rm -f $file/UrbAdm_STREET_AXIS.geojson
 rm -f $file/diffs.mbtiles
 rm -rf $file/diffs-tiles
 
