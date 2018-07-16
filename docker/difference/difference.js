@@ -61,7 +61,8 @@ module.exports = function(data, tile, writeData, done) {
           var buffer = turf.buffer(f.geometry, 20, 'meters');
           if (buffer) return buffer;
         });
-
+        
+        // here we merge each street's buffer to make a big one
         var merged = streetBuffers[0];
         for (var i = 1; i < streetBuffers.length; i++) {
           merged = turf.union(merged, streetBuffers[i]);
@@ -102,8 +103,8 @@ module.exports = function(data, tile, writeData, done) {
             NotConfirmedHashCodeException.prototype = Object.create(Error.prototype);
             NotConfirmedHashCodeException.prototype.name = "NotConfirmedHashCodeException";
             NotConfirmedHashCodeException.prototype.constructor = NotConfirmedHashCodeException;
-            var coords;
-            var hash;
+            var coords = 0;
+            var hash = 0;
 
             try {
               for(var c = 0; c < feature.geometry.coordinates.length; c++){
@@ -171,7 +172,6 @@ function filter(road) {
   }
 }
 
-// antoine's tries
 function getNewHash(featcoords, featproperties) {
   NotNewHashCodeGenerationException.prototype = Object.create(Error.prototype);
   NotNewHashCodeGenerationException.prototype.name = "NotNewHashCodeGenerationException";
