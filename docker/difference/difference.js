@@ -108,7 +108,9 @@ module.exports = function(data, tile, writeData, done) {
 
             try {
               for(var c = 0; c < feature.geometry.coordinates.length; c++){
-                coords += feature.geometry.coordinates[c];
+                for(var d = 0; d < feature.geometry.coordinates[c].length;d++){
+                  coords += feature.geometry.coordinates[c][d];
+                }
               }
               hash = getNewHash( coords, feature.properties);
               if(hash === null || hash === "") {
