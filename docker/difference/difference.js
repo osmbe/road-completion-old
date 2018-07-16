@@ -94,13 +94,13 @@ module.exports = function(data, tile, writeData, done) {
             feature.geometry) {
 
             // 07/09** I think we could hash the tiles too (property part of feature)
-            //hash = hashF(feature);
+            hash = hashF(feature);
             //hash = hashF(feature.geometry); 
             
             // 07/10** 1st try to make the hashing system
             //get the coordinates from the geojson files
             
-            NotConfirmedHashCodeException.prototype = Object.create(Error.prototype);
+           /* NotConfirmedHashCodeException.prototype = Object.create(Error.prototype);
             NotConfirmedHashCodeException.prototype.name = "NotConfirmedHashCodeException";
             NotConfirmedHashCodeException.prototype.constructor = NotConfirmedHashCodeException;
             var coords = 0;
@@ -120,7 +120,7 @@ module.exports = function(data, tile, writeData, done) {
             }catch(err) {
                 err = new NotConfirmedHashCodeException("Impossible to hash coordinates and properties");
                 alert(err.toString());
-              }
+              }*/
 
           feature.properties.id = "" + hash;
           feature.properties.tile_z = tile[2];
