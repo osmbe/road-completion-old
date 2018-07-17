@@ -26,7 +26,7 @@ fi
 #node process.js ./wegsegment.geojson ./wegsegment-transformed.geojson
 
 cp ./UrbAdm_STREET_AXIS.geojson ../../../sharedfolder
-
+rm -rf UrbAdm_STREET_AXIS.* 
 #convert to vectortiles
 # TODO: test with zoom-level limits, we only need level 14.
 #tippecanoe -f -o ./wegenregister.mbtiles ./wegsegment.geojson -l roads -pf -pk
