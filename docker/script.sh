@@ -15,6 +15,11 @@ cd data-tool
 sudo docker build -t road-completion-getdata .
 sudo docker run -v $file:/sharedfolder road-completion-getdata
 
+
+cd ../tagprocess
+sudo docker build -t road-completion-tagprocess .
+sudo docker run -v $file:/sharedfolder road-completion-tagprocess
+
 # convert data from osm and urbis to comparable mbtiles
 cd ../convert
 sudo docker build -t road-completion-convert .
