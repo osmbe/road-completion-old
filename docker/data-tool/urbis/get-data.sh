@@ -19,7 +19,7 @@ cd shp
 
 #convert wegenregister to geojson
 if [ ! -f ./UrbAdm_STREET_AXIS.geojson ]; then
-ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_AXIS.geojson ./UrbAdm_STREET_AXIS.shp
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_AXIS.geojson ./UrbAdm_STREET_SURFACE_LEVEL0.shp
 fi
 
 #convert to OSM-tags

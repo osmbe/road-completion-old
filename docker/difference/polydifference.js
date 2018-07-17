@@ -62,16 +62,19 @@ module.exports = function(data, tile, writeData, done) {
           if (buffer) return buffer;
         });
         
-        var merged = streetBuffers[0];
+        /*var merged = streetBuffers[0];
         for (var i = 1; i < streetBuffers.length; i++) {
           merged = turf.union(merged, streetBuffers[i]);
         }
 
         merged = turf.simplify(merged, 0.000001, false);
         streetBuffers = normalize(merged);
-        
+        */
 
-
+        //**
+        buffer = turf.simplify(buffer, 0.000001, false);
+        streetBuffers = normalize(buffer); 
+        //**
 
         if (debugDir) {
           fs.writeFile (osmBuffersDir + tileName, JSON.stringify(merged));
@@ -82,7 +85,12 @@ module.exports = function(data, tile, writeData, done) {
             streetBuffers.features.forEach(function(streetsRoad){
                 var roadDiff = turf.difference(refRoad, streetsRoad);
                 if(roadDiff && !filter(roadDiff)){
+                  // Compare to see if there is a difference in their names
+                  //**
+                  if(CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
                     refDeltas.features.push(roadDiff);
+                  }
+                  //**
                 } 
             });
           });
