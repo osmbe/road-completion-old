@@ -1,0 +1,8 @@
+{
+  "name": "geojson-transform",
+  "version": "0.0.1",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "geojson-stream": "0.0.1"
+  }
+}

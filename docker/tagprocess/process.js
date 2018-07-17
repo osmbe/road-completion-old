@@ -1,6 +1,6 @@
 // import { tag } from "@turf/turf";
 
-var geojsonTransform = require("../../geojson-transform");
+var geojsonTransform = require("./geojson-transform");
 
 var args = process.argv.slice(2);
 
