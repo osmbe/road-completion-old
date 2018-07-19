@@ -1,4 +1,4 @@
-var geojsonTransform = require("../../tagprocess/geojson-transform");
+var geojsonTransform = require("./geojson-transform");
 
 var args = process.argv.slice(2);
 
@@ -71,6 +71,11 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
 
             transformed.name = p.PN_NAME_FR + " - " + p.PN_NAME_DU;
         }
+    }
+
+    if (p.PZ_NAT_COD)
+    {
+        transformed.postal_code = p.PZ_NAT_COD;
     }
 
     transformed.source = "urbis";

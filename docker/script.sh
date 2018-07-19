@@ -2,6 +2,16 @@
 
 file="$(pwd)/host-share"
 
+combined="UrbAdm_COMBINED.geojson"
+level_plus1="UrbAdm_STREET_SURFACE_LEVEL_PLUS1.geojson"
+level_minus1="UrbAdm_STREET_SURFACE_LEVEL_MINUS1.geojson"
+level0="UrbAdm_STREET_AXIS.geojson"
+output="UrbAdm_STREET_TAGS.geojson"
+
+level_plus1_output="UrbAdm_STREET_SURFACE_LEVEL_PLUS1_TAGS.geojson"
+level_minus1_output="UrbAdm_STREET_SURFACE_LEVEL_MINUS1_TAGS.geojson"
+level0_output="UrbAdm_STREET_AXIS_TAGS.geojson"
+
 rm -f $file/output.geojson
 rm -f $file/brussels.mbtiles
 rm -f $file/UrbAdm_STREET_AXIS.mbtiles
@@ -9,6 +19,14 @@ rm -f $file/brussels.geojson
 rm -f $file/UrbAdm_STREET_AXIS.geojson
 rm -f $file/diffs.mbtiles
 rm -rf $file/diffs-tiles
+rm -f $file/$combined
+rm -f $file/$level_plus1
+rm -f $file/$level_minus1
+rm -f $file/$level0
+rm -f $file/$output
+rm -f $file/$level_plus1_output
+rm -f $file/$level_minus1_output
+rm -f $file/$level0_output
 
 # gets data for osm and urbis, cuts out brussels for osm
 cd data-tool
@@ -16,9 +34,9 @@ sudo docker build -t road-completion-getdata .
 sudo docker run -v $file:/sharedfolder road-completion-getdata
 
 
-#cd ../tagprocess
-#sudo docker build -t road-completion-tagprocess .
-#sudo docker run -v $file:/sharedfolder road-completion-tagprocess
+cd ../tagprocess
+sudo docker build -t road-completion-tagprocess .
+sudo docker run -v $file:/sharedfolder road-completion-tagprocess
 
 #convert data from osm and urbis to comparable mbtiles
 cd ../convert
