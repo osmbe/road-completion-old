@@ -7,14 +7,19 @@ var args = process.argv.slice(2);
 
 var outputStream = fs.createWriteStream(args[2]);
 
+var statsOutputStream = undefined;
+if(args.length > 3) {
+  statsOutputStream = fs.createWriteStream(args[3]);
+}
+
 var bufferOutputStream = undefined;
-if (args.length > 3) {
-  bufferOutputStream = fs.createWriteStream(args[3]);
+if (args.length > 4) {
+  bufferOutputStream = fs.createWriteStream(args[4]);
 }
 
 var refOutputStream = undefined;
-if (args.length > 4) {
-  refOutputStream = fs.createWriteStream(args[4]);
+if (args.length > 5) {
+  refOutputStream = fs.createWriteStream(args[5]);
 }
 
 var flanders = {
@@ -97,19 +102,33 @@ var opts = {
 var firstFeature = true;
 var firstBufferFeature = true;
 var firstRefFeature = true;
+//var firstStatFeature = true;
 var diff = turf.featureCollection([]);
+//var stats = {
+  //total: 0,
+  //diff:0
+//};
 tileReduce(opts).on('reduce', function(result) {
+  var type = result.type;
+  if(type !== "LineString"){
+    var diff = result.diffs;
+    var buffers = result.buffers;
+    var refs = result.refs;
+  }
+  if(type === "LineString"){
+    var localStats = result.stats;
+    stats.diff += localStats.diff;
+    stats.total += localStats.total;
 
-  var diff = result.diffs;
-  var buffers = result.buffers;
-  var refs = result.refs;
-
-  for (var i = 0; i < diff.features.length; i++) {
-    if (!firstFeature) {
-      outputStream.write(',');
+  }
+  if(type !== "LineString"){
+    for (var i = 0; i < diff.features.length; i++) {
+      if (!firstFeature) {
+        outputStream.write(',');
+      }
+      firstFeature = false;
+      outputStream.write(JSON.stringify(diff.features[i]));
     }
-    firstFeature = false;
-    outputStream.write(JSON.stringify(diff.features[i]));
   }
 
   if (bufferOutputStream && buffers && buffers.features) {
@@ -120,6 +139,14 @@ tileReduce(opts).on('reduce', function(result) {
       firstBufferFeature = false;
       bufferOutputStream.write(JSON.stringify(buffers.features[i]));
     }
+  }
+
+  if(statsOutputStream && type === "LineString") {
+      if(!firstStatFeature){
+        statsOutputStream.write(',');
+      }
+      firstStatFeature = false;
+      statsOutputStream.write(JSON.stringify(stats));
   }
 
   if (refOutputStream && refs && refs.features) {
@@ -137,6 +164,11 @@ tileReduce(opts).on('reduce', function(result) {
   if (bufferOutputStream) {
     bufferOutputStream.write('{ "type": "FeatureCollection", "features": [');
   }
+
+  if(statsOutputStream) {
+    statsOutputStream.write('{ "type": "FeatureCollection", "features": [');
+  }
+
   if (refOutputStream) {
     refOutputStream.write('{ "type": "FeatureCollection", "features": [');
   }
@@ -153,6 +185,11 @@ tileReduce(opts).on('reduce', function(result) {
   if (refOutputStream) {
     refOutputStream.write('] }');
     refOutputStream.end();
+  }
+
+  if(statsOutputStream) {
+    statsOutputStream.write('] }');
+    statsOutputStream.end();
   }
 
   outputStream.write('] }');

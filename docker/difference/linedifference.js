@@ -10,7 +10,6 @@ module.exports = function(data, tile, writeData, done) {
   var refDeltas = turf.featureCollection([]);
   var streetBuffers = undefined;
   var refRoads = undefined;
-  var refRoadType = undefined;
   var refRoadsLength = 0;
   var diffRoadsLength = 0;
   var debugDir = "/home/xivk/work/osmbe/road-completion/debug/";
@@ -85,11 +84,10 @@ module.exports = function(data, tile, writeData, done) {
 
         if (refRoads && streetBuffers) {
           refRoads.features.forEach(function(refRoad){
-            //refRoadsLength += turf.lineDistance(refRoad);
+            refRoadsLength += turf.lineDistance(refRoad);
             streetBuffers.features.forEach(function(streetsRoad){
                 var roadDiff = turf.difference(refRoad, streetsRoad);
-                //diffRoadsLength += turf.lineDistance(roadDiff);
-                refRoadType = refRoad.geometry.type;
+                diffRoadsLength += turf.lineDistance(roadDiff);
                 if(roadDiff && !filter(roadDiff)){
                   refDeltas.features.push(roadDiff);
                   // Compare to see if there is a difference in their names
@@ -156,7 +154,6 @@ module.exports = function(data, tile, writeData, done) {
   catch (e)
   {
     console.log("Could not process tile " + tileName + ": " + e.message);
-    console.log(e);
   }
 
   done(null, { 
@@ -164,7 +161,6 @@ module.exports = function(data, tile, writeData, done) {
     buffers: streetBuffers,
     refs: refRoads,
     osm: osmData,
-    type: refRoadType,
     stats: {
       total: refRoadsLength,
       diff: diffRoadsLength
