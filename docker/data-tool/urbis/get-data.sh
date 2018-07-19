@@ -22,11 +22,23 @@ if [ ! -f ./UrbAdm_STREET_AXIS.geojson ]; then
 ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_AXIS.geojson ./UrbAdm_STREET_SURFACE_LEVEL0.shp
 fi
 
+if [ ! -f ./UrbAdm_STREET_SURFACE_LEVEL_MINUS1.geojson ]; then
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_SURFACE_LEVEL_MINUS1.geojson ./UrbAdm_STREET_SURFACE_LEVEL_MINUS1.shp
+fi
+
+if [ ! -f ./UrbAdm_STREET_SURFACE_LEVEL_PLUS1.geojson ]; then
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_SURFACE_LEVEL_PLUS1.geojson ./UrbAdm_STREET_SURFACE_LEVEL_PLUS1.shp
+fi
+
 #convert to OSM-tags
 #node process.js ./wegsegment.geojson ./wegsegment-transformed.geojson
 
 cp ./UrbAdm_STREET_AXIS.geojson ../../../sharedfolder
+cp ./UrbAdm_STREET_SURFACE_LEVEL_PLUS1.geojson ../../../sharedfolder
+cp ./UrbAdm_STREET_SURFACE_LEVEL_MINUS1.geojson ../../../sharedfolder
 rm -rf UrbAdm_STREET_AXIS.* 
+rm -rf UrbAdm_STREET_SURFACE_LEVEL_MINUS1.* 
+rm -rf UrbAdm_STREET_SURFACE_LEVEL_PLUS1.* 
 #convert to vectortiles
 # TODO: test with zoom-level limits, we only need level 14.
 #tippecanoe -f -o ./wegenregister.mbtiles ./wegsegment.geojson -l roads -pf -pk

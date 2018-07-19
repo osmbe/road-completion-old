@@ -24,21 +24,28 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
 
     if (p.TYPE)
     {
-        if (p.TYPE == 'S' || p.TYPE == 'I' || p.TYPE == 'W')
-        {
-            transformed.highway = "unclassified";
-        }
         if (p.TYPE == 'K')
         {
             transformed.service = "parking_aisle";
+            transformed.highway = "unclassified";
+            console.log('Added parking aisle');
         }
         if (p.TYPE == 'B')
         {
             transformed.bridge = 'yes';
+            transformed.highway = "unclassified";
+            console.log('Added bridge');
         }
         if (p.TYPE == 'T')
         {
             transformed.tunnel = 'yes';
+            transformed.highway = "unclassified";
+            console.log('Added tunnel');
+        }
+        if (p.TYPE == 'S' || p.TYPE == 'I' || p.TYPE == 'W')
+        {
+            if (transformed.highway != "unclassified")
+            transformed.highway = "unclassified";
         }
     }
 
