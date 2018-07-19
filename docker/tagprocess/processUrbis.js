@@ -73,6 +73,11 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
         }
     }
 
+    if (p.PZ_NAT_COD)
+    {
+        transformed.postal_code = p.PZ_NAT_COD;
+    }
+
     transformed.source = "urbis";
 
     if (transformed.highway) 
