@@ -10,7 +10,6 @@ var outputStream = fs.createWriteStream(args[2]);
 var statsOutputStream = undefined;
 if(args.length > 3) {
   statsOutputStream = fs.createWriteStream(args[3]);
-  outputStream.end();
 }
 
 var bufferOutputStream = undefined;
@@ -136,13 +135,13 @@ tileReduce(opts).on('reduce', function(result) {
     }
   }
 
-  if(statsOutputStream) {
+  /*if(statsOutputStream) {
       if(!firstStatFeature){
         statsOutputStream.write(',');
       }
       firstStatFeature = false;
       statsOutputStream.write(JSON.stringify(stats));
-  }
+  }*/
 
   if (refOutputStream && refs && refs.features) {
     for (var i = 0; i < refs.features.length; i++) {
