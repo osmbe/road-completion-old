@@ -49,7 +49,7 @@ sudo docker build -t road-completion-convert .
 sudo docker run -v $file:/sharedfolder road-completion-convert
 
 # starts index.js for the converted mbtiles
-cd difference
+cd ../difference
 sudo docker build -t road-completion-difference .
 sudo docker run -v $file:/usr/src/app/sharedfolder road-completion-difference
 
