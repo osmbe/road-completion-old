@@ -10,6 +10,9 @@ module.exports = function(data, tile, writeData, done) {
   var refDeltas = turf.featureCollection([]);
   var streetBuffers = undefined;
   var refRoads = undefined;
+  var refRoadType = undefined;
+  var refRoadsLength = 0;
+  var diffRoadsLength = 0;
   var debugDir = "/home/xivk/work/osmbe/road-completion/debug/";
   if (!fs.existsSync(debugDir)) {
     debugDir = undefined;
@@ -71,18 +74,30 @@ module.exports = function(data, tile, writeData, done) {
         streetBuffers = normalize(merged);
         
 
-
+        //**
+        //buffer = turf.simplify(buffer, 0.000001, false);
+        //streetBuffers = normalize(buffer); 
+        //**
 
         if (debugDir) {
           fs.writeFile (osmBuffersDir + tileName, JSON.stringify(merged));
         }
 
         if (refRoads && streetBuffers) {
-          refRoads.features.forEach(function(refRoad){ 
+          refRoads.features.forEach(function(refRoad){
+            refRoadsLength += turf.lineDistance(refRoad);
             streetBuffers.features.forEach(function(streetsRoad){
                 var roadDiff = turf.difference(refRoad, streetsRoad);
+                diffRoadsLength += turf.lineDistance(roadDiff);
+                refRoadType = refRoad.geometry.type;
                 if(roadDiff && !filter(roadDiff)){
+                  refDeltas.features.push(roadDiff);
+                  // Compare to see if there is a difference in their names
+                  
+                  if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
                     refDeltas.features.push(roadDiff);
+                  }
+                  
                 } 
             });
           });
@@ -108,7 +123,7 @@ module.exports = function(data, tile, writeData, done) {
             NotConfirmedHashCodeException.prototype.name = "NotConfirmedHashCodeException";
             NotConfirmedHashCodeException.prototype.constructor = NotConfirmedHashCodeException;
             var coords = 0;
-            var hash = 0;
+            var hash = undefined;
 
             try {
               for(var c = 0; c < feature.geometry.coordinates.length; c++){
@@ -116,7 +131,7 @@ module.exports = function(data, tile, writeData, done) {
                   coords += feature.geometry.coordinates[c][d];
                 }
               }
-              hash = getNewHash( feature.properties, hashF(coords));
+              hash = getNewHash( hashF(feature.properties), hashF(coords));
               if(hash === null || hash === "") {
                 throw new NotConfirmedHashCodeException();
             }
@@ -141,13 +156,19 @@ module.exports = function(data, tile, writeData, done) {
   catch (e)
   {
     console.log("Could not process tile " + tileName + ": " + e.message);
+    console.log(e);
   }
 
   done(null, { 
+    type: refRoadType,
     diffs: refDeltas,
     buffers: streetBuffers,
     refs: refRoads,
-    osm: osmData
+    osm: osmData,
+    stats: {  // try to send them only if it's a LineString document
+      total: refRoadsLength,
+      diff: diffRoadsLength
+    }
    });
 };
 
@@ -176,6 +197,12 @@ function filter(road) {
   } else {
     return false;
   }
+  /*var area = turf.area(road, 'kilometers');
+    if(area < 350) {
+    return true;
+  } else {
+    return false;
+  }*/
 }
 
 function getNewHash(featcoords, hashedcoords) {
@@ -186,15 +213,18 @@ function getNewHash(featcoords, hashedcoords) {
   var hashresult = "";
   let hashnb = 17;
   try {
-  
+      hashresult = featcoords + hashedcoords;
+      /*
       for(let i = 0; i < hashedcoords.length;i++) {
         hashnb = (((hashnb << 5) - hashnb ) + hashedcoords.charCodeAt(i)) & 0xFFFFFFFF;
       }
       for(let i = 0; i < featcoords.length;i++) {
         hashnb = (((hashnb << 5) - hashnb ) + featcoords.charCodeAt(i)) & 0xFFFFFFFF;
       }
-      hashresult = hashnb.toString();
+      hashresult = hashnb.toString();*/
       return hashresult;
+      
+
   }catch(err){
     err = new NotNewHashCodeGenerationException("Data are invalid or hashing process doesn't work please report to getNewHash function");
     console.log(err.toString());
