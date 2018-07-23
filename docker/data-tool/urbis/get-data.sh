@@ -10,6 +10,9 @@
 #unzip ./Wegenregister_SHAPE_20180621.zip -d ./
 #fi
 
+STREET_AXIS="UrbAdm_STREET_AXIS"
+STREET_LEVEL0="UrbAdm_STREET_SURFACE_LEVEL0"
+
 # Download data from urbis
 wget -O UrbAdm.zip https://s.irisnet.be/v1/AUTH_ce3f7c74-fbd7-4b46-8d85-53d10d86904f/UrbAdm/UrbAdm_SHP.zip
 unzip -o UrbAdm.zip -d ./
@@ -18,8 +21,8 @@ unzip -o UrbAdm.zip -d ./
 cd shp
 
 #convert wegenregister to geojson
-if [ ! -f ./UrbAdm_STREET_AXIS.geojson ]; then
-ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./UrbAdm_STREET_AXIS.geojson ./UrbAdm_STREET_SURFACE_LEVEL0.shp
+if [ ! -f ./$STREET_AXIS.geojson ]; then
+ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./$STREET_AXIS.geojson ./$STREET_LEVEL0.shp
 fi
 
 if [ ! -f ./UrbAdm_STREET_SURFACE_LEVEL_MINUS1.geojson ]; then
