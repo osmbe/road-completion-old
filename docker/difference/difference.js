@@ -85,19 +85,19 @@ module.exports = function(data, tile, writeData, done) {
 
         if (refRoads && streetBuffers) {
           refRoads.features.forEach(function(refRoad){
-            //refRoadsLength += turf.lineDistance(refRoad);
+            refRoadsLength += turf.lineDistance(refRoad);
             streetBuffers.features.forEach(function(streetsRoad){
                 var roadDiff = turf.difference(refRoad, streetsRoad);
-                //diffRoadsLength += turf.lineDistance(roadDiff);
+                diffRoadsLength += turf.lineDistance(roadDiff);
                 refRoadType = refRoad.geometry.type;
                 if(roadDiff && !filter(roadDiff)){
                   refDeltas.features.push(roadDiff);
                   // Compare to see if there is a difference in their names
-                  /*
-                  if(CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
+                  
+                  if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
                     refDeltas.features.push(roadDiff);
                   }
-                  */
+                  
                 } 
             });
           });
@@ -160,12 +160,12 @@ module.exports = function(data, tile, writeData, done) {
   }
 
   done(null, { 
+    type: refRoadType,
     diffs: refDeltas,
     buffers: streetBuffers,
     refs: refRoads,
     osm: osmData,
-    type: refRoadType,
-    stats: {
+    stats: {  // try to send them only if it's a LineString document
       total: refRoadsLength,
       diff: diffRoadsLength
     }

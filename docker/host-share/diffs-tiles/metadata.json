@@ -1,12 +1,1 @@
-{
-    "name": "Diffs layer", 
-    "format": "pbf", 
-    "description": "Diffs layer", 
-    "json": "{\"vector_layers\": [ { \"id\": \"diffs\", \"description\": \"\", \"minzoom\": 0, \"maxzoom\": 14, \"fields\": {\"ADMIN\": \"String\", \"ADM_VALID\": \"String\", \"AREA\": \"Number\", \"BEGIN_LIFE\": \"String\", \"HIERARCHY\": \"String\", \"HIER_VALID\": \"String\", \"ID\": \"Number\", \"INSPIRE_ID\": \"String\", \"MU_NAME_DU\": \"String\", \"MU_NAME_FR\": \"String\", \"MU_NAT_COD\": \"String\", \"PNMC\": \"String\", \"PN_ID\": \"Number\", \"PN_NAME_DU\": \"String\", \"PN_NAME_FR\": \"String\", \"PZ_NAT_COD\": \"String\", \"TYPE\": \"String\", \"VERSIONID\": \"Number\", \"id\": \"String\", \"tile_x\": \"Number\", \"tile_y\": \"Number\", \"tile_z\": \"Number\"} } ] }", 
-    "bounds": "4.259976,50.773410,4.476360,50.910432", 
-    "minzoom": "0", 
-    "version": "2", 
-    "maxzoom": "14", 
-    "type": "overlay", 
-    "center": "4.383545,50.840635,14"
-}
+{}
