@@ -10,10 +10,9 @@ var opts = {
   source: args[0], 
   target: args[1], 
 };
-transformed.name = p.PN_NAME_FR + " - " + p.PN_NAME_DU;
 
 var i = 0;
-geojsonTransform.transform(opts.source, opts.target, (p) => {
+geojsonTransform.transform(opts.source, opts.target, function(p) {
 
     var transformed = {};
     for (var property in p) 
@@ -63,6 +62,9 @@ geojsonTransform.transform(opts.source, opts.target, (p) => {
             transformed.highway = "unclassified";
         }
     }
+
+        // ADD COBBLESTONE transformed.surface = "sett"
+        // 
 
     // I had to comment this part out because I couldn't seem to access the fr and nl name inside of "other_tags"
     /*if (p.PN_NAME_FR && p.PN_NAME_FR != 'Inconnu')
