@@ -128,9 +128,20 @@ module.exports = function(data, tile, writeData, done) {
             var hash = undefined;
 
             try {
-              for(var c = 0; c < feature.geometry.coordinates.length; c++){
-                for(var d = 0; d < feature.geometry.coordinates[c].length;d++){
-                  coords += feature.geometry.coordinates[c][d];
+              if(feature.geometry.type === "Polygon") {
+                for(var c = 0; c < feature.geometry.coordinates.length; c++){
+                  for(var d = 0; d < feature.geometry.coordinates[c].length; d++){
+                    for(var e = 0; e < feature.geometry.coordinates[c][d].length; e++){
+                      coords += feature.geometry.coordinates[c][d][e];
+                    }
+                  }
+                }
+              }
+              else {
+                for(var c = 0; c < feature.geometry.coordinates.length; c++){
+                  for(var d = 0; d < feature.geometry.coordinates[c].length;d++){
+                    coords += feature.geometry.coordinates[c][d];
+                  }
                 }
               }
               hash = getNewHash( hashF(feature.properties), hashF(coords));
