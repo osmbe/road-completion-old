@@ -118,7 +118,6 @@ tileReduce(opts).on('reduce', function(result) {
     stats.diff += localStats.diff;
     stats.total += localStats.total;
 
-  if(type !== "LineString"){
     for (var i = 0; i < diff.features.length; i++) {
       if (!firstFeature) {
         outputStream.write(',');
@@ -126,7 +125,6 @@ tileReduce(opts).on('reduce', function(result) {
       firstFeature = false;
       outputStream.write(JSON.stringify(diff.features[i]));
     }
-  }
 
   if (bufferOutputStream && buffers && buffers.features) {
     for (var i = 0; i < buffers.features.length; i++) {
@@ -138,7 +136,7 @@ tileReduce(opts).on('reduce', function(result) {
     }
   }
 
-  if(statsOutputStream && type === "LineString") {
+  if(statsOutputStream) {
       if(!firstStatFeature){
         statsOutputStream.write(',');
       }
@@ -162,10 +160,6 @@ tileReduce(opts).on('reduce', function(result) {
     bufferOutputStream.write('{ "type": "FeatureCollection", "features": [');
   }
 
-  if(statsOutputStream) {
-    statsOutputStream.write('{ ');
-  }
-
   if (refOutputStream) {
     refOutputStream.write('{ "type": "FeatureCollection", "features": [');
   }
@@ -185,7 +179,7 @@ tileReduce(opts).on('reduce', function(result) {
   }
 
   if(statsOutputStream) {
-    statsOutputStream.write(' }');
+    statsOutputStream.write(stats);
     statsOutputStream.end();
   }
 

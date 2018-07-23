@@ -37,7 +37,7 @@ rm -f $file/stats.geojson
 cd data-tool
 sudo docker build -t road-completion-getdata .
 sudo docker run -v $file:/sharedfolder road-completion-getdata
-
+#sudo docker run -v /home/antoine/road-completion/docker/host-share:/sharedfolder road-completion-getdata
 
 cd ../tagprocess
 sudo docker build -t road-completion-tagprocess .

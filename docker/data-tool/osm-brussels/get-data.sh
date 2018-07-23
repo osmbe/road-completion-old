@@ -8,7 +8,9 @@ wget http://files.itinero.tech/data/OSM/planet/europe/belgium-latest.osm.pbf  -O
 osmosis --read-pbf ./belgium-latest.osm.pbf --bounding-box left=4.23248291015625 top=50.92467892226281 right=4.513320922851562 bottom=50.75904732375726 --write-pbf ./brussels-latest.osm.pbf
 
 #convert to geojson while taking only highways.
-ogr2ogr -f GeoJSON -select name,highway -where "highway is not null"  -nln osm_highways -progress  brussels.geojson  brussels-latest.osm.pbf  lines
+ogr2ogr --config OSM_CONFIG_FILE osmconf.ini -f GeoJSON -select name,highway,bridge,tunnel,surface -where "highway is not null" -nln osm_highways -progress  brussels.geojson brussels-latest.osm.pbf lines
+
+
 
 cp brussels.geojson ../../sharedfolder
 

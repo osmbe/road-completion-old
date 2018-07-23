@@ -55,9 +55,9 @@ module.exports = function(data, tile, writeData, done) {
         osmData = flatten(osmData);
         refRoads = flatten(refRoads);
         
-        refRoads.features.forEach(function(road, i) {
-          if (filter(road)) refRoads.features.splice(i,1);
-        });
+        //refRoads.features.forEach(function(road, i) {
+          //if (filter(road)) refRoads.features.splice(i,1);
+        //});
 
         // buffer streets
         streetBuffers = osmData.features.map(function(f){
@@ -85,17 +85,19 @@ module.exports = function(data, tile, writeData, done) {
 
         if (refRoads && streetBuffers) {
           refRoads.features.forEach(function(refRoad){
-            refRoadsLength += turf.lineDistance(refRoad);
             streetBuffers.features.forEach(function(streetsRoad){
-                var roadDiff = turf.difference(refRoad, streetsRoad);
+              var roadDiff = turf.difference(refRoad, streetsRoad);
+              refRoadType = refRoad.geometry.type;
+              if(roadDiff && !filter(roadDiff, refRoadType)){
+                refRoadsLength += turf.lineDistance(refRoad);
                 diffRoadsLength += turf.lineDistance(roadDiff);
-                refRoadType = refRoad.geometry.type;
-                if(roadDiff && !filter(roadDiff)){
-                  refDeltas.features.push(roadDiff);
-                  // Compare to see if there is a difference in their names
+                // Compare to see if there is a difference in their names
                   
                   if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
-                    refDeltas.features.push(roadDiff);
+                    if(refRoad.properties.bridge || refRoad.properties.tunnel || refRoad.properties.cobblestone) {
+                      if(!CompareByTag(streetsRoad.properties.bridge) || !CompareByTag(streetsRoad.properties.tunnel) || !CompareCobblestone(streetsRoad.properties.surface)) refDeltas.features.push(roadDiff);
+                    }
+                    else  refDeltas.features.push(roadDiff);
                   }
                   
                 } 
@@ -190,19 +192,23 @@ function clip(lines, tile) {
   return lines;
 }
 
-function filter(road) {
-  var length = turf.lineDistance(road, 'kilometers');
-  if (length < 0.03) {
-    return true;
-  } else {
-    return false;
-  }
-  /*var area = turf.area(road, 'kilometers');
+function filter(road, type = "Polygon") {
+  if(type === "Polygon") {
+    var area = turf.area(road, 'kilometers');
     if(area < 350) {
-    return true;
-  } else {
-    return false;
-  }*/
+      return true;
+    } else {
+      return false;
+    }
+  }
+  else {
+    var length = turf.lineDistance(road, 'kilometers');
+    if (length < 0.03) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 function getNewHash(featcoords, hashedcoords) {
@@ -233,6 +239,16 @@ function getNewHash(featcoords, hashedcoords) {
 
 function CompareByTags(refTag, sourceTag) {
   if(refTag !== sourceTag) return true;
+  else return false;
+}
+
+function CompareByTag(refTag) {
+  if(refTag === "yes") return true;
+  else return false;
+}
+
+function CompareCobblestone(refTag) {
+  if (refTag === "sett" || refTag === "unhewn_cobblestone" || refTag === "cobblestone") return true;
   else return false;
 }
 

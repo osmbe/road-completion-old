@@ -29,12 +29,13 @@ ENV LC_ALL en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
 RUN locale
 
-COPY . /road-completion
 RUN  apt-get update \
   && apt-get install -y wget \
   && rm -rf /var/lib/apt/lists/*
 
 RUN sudo apt-get update
 RUN sudo apt-get install -y osmosis
+
+COPY . /road-completion
 
 ENTRYPOINT cd ./road-completion/osm-brussels && sh get-data.sh && cd ../urbis && sh get-data.sh 
