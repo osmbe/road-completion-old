@@ -18,15 +18,20 @@ rm -f $file/UrbAdm_STREET_AXIS.mbtiles
 rm -f $file/brussels.geojson
 rm -f $file/UrbAdm_STREET_AXIS.geojson
 rm -f $file/diffs.mbtiles
-rm -rf $file/diffs-tiles
+rm -f $file/diffs-tiles
 rm -f $file/$combined
 rm -f $file/$level_plus1
 rm -f $file/$level_minus1
+rm -f $file/UrbAdm_COMBINED.mbtiles
+rm -f $file/UrbAdm_STREET_ROADS_LENGTH.geojson
+rm -f $file/UrbAdm_STREET_ROADS_LENGTH.mbtiles
 rm -f $file/$level0
 rm -f $file/$output
 rm -f $file/$level_plus1_output
 rm -f $file/$level_minus1_output
 rm -f $file/$level0_output
+rm -f $file/nointerest.geojson
+rm -f $file/stats.geojson
 
 # gets data for osm and urbis, cuts out brussels for osm
 cd data-tool

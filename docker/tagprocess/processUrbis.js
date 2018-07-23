@@ -10,19 +10,24 @@ var opts = {
   source: args[0], 
   target: args[1], 
 };
+transformed.name = p.PN_NAME_FR + " - " + p.PN_NAME_DU;
 
 var i = 0;
-geojsonTransform.transform(opts.source, opts.target, function(p) {
+geojsonTransform.transform(opts.source, opts.target, (p) => {
 
     var transformed = {};
-    for (var property in p) {
-        if (p.hasOwnProperty(property)) {
+    for (var property in p) 
+    {
+        if (p.hasOwnProperty(property)) 
+        {
             transformed["orginal:" + property] = p[property];
         }
     }
 
     i++;
-    if (i % 1000 == 0){
+    if (i % 1000 == 0)
+    {
+        // This is just to have some feedback, you know, tell the user that the code is actually doing something
         console.log("Processed " + i + " linestrings...");
     }
 
