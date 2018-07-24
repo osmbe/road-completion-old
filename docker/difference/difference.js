@@ -89,13 +89,23 @@ module.exports = function(data, tile, writeData, done) {
               var roadDiff = turf.difference(refRoad, streetsRoad);
               refRoadType = refRoad.geometry.type;
               if(roadDiff && !filter(roadDiff, refRoadType)){
-                refRoadsLength += turf.lineDistance(refRoad);
-                diffRoadsLength += turf.lineDistance(roadDiff);
+                for(var c = 0; c < refRoad.geometry.coordinates.length; c++){
+                  for(var d = 0; d < refRoad.geometry.coordinates[c].length; d++){
+                    refRoadsLength += turf.length(refRoad.geometry.coordinates[c][d]);
+                  }
+                }
+                for(var e = 0; e < roadDiff.geometry.coordinates.length; e++){
+                  for(var f = 0; f <roadDiff.geometry.coordinates[e].length; f++){
+                  diffRoadsLength += turf.length(roadDiff.geometry.coordinates[e][f]);
+                  }
+                }
                 // Compare to see if there is a difference in their names
                   
                   if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
                     if(refRoad.properties.bridge || refRoad.properties.tunnel || refRoad.properties.cobblestone) {
-                      if(!CompareByTag(streetsRoad.properties.bridge) || !CompareByTag(streetsRoad.properties.tunnel) || !CompareCobblestone(streetsRoad.properties.surface)) refDeltas.features.push(roadDiff);
+                      if(!CompareByTag(streetsRoad.properties.bridge) || !CompareByTag(streetsRoad.properties.tunnel) || !CompareCobblestone(streetsRoad.properties.surface)) {
+                        refDeltas.features.push(roadDiff);
+                      } 
                     }
                     else  refDeltas.features.push(roadDiff);
                   }
@@ -248,16 +258,19 @@ function getNewHash(featcoords, hashedcoords) {
   }
 }
 
+// Comparing a tag from two different sources and returns true if those are different
 function CompareByTags(refTag, sourceTag) {
   if(refTag !== sourceTag) return true;
   else return false;
 }
 
+// Comparing a tag and returns true if this tag has been put to yes
 function CompareByTag(refTag) {
   if(refTag === "yes") return true;
   else return false;
 }
 
+// Returns true if there is cobblestone in the feature
 function CompareCobblestone(refTag) {
   if (refTag === "sett" || refTag === "unhewn_cobblestone" || refTag === "cobblestone") return true;
   else return false;
