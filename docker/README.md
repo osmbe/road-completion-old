@@ -82,7 +82,7 @@ location /vector-tiles/ {
 }
 ```
 
-- `'content-encoding' 'gzip'`: Gzip compressing is used because of the way mapbox decodes the data.
+- `'content-encoding' 'gzip'`: Gzip compression is used because of the way mapbox decodes the data.
 - `'Access-Control-Allow-Origin' '*' always`: To allow any resource to access your resource.
 - `'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always`: Specifies the methods allowed when accessing the resource in response to a preflight request.
 - `try_files $uri =200`: Mapbox throws exceptions when tiles are not found. This makes it unpredictable because not all tiles contain issues. To fix this we always set the return code to 200.
