@@ -62,6 +62,28 @@ Explanation of the created files:
     - Contains all the differences between urbis and OSM
 - **diffs.mbtiles**
     - all differences in an mbtiles file. (for converting to folder)
-- **difftiles**
+- **diffs-tiles**
     - Folder that contains a pbf file for each tile
     - This gets called in the frontend
+
+## Publishing
+
+Mapbox GL JS pulls the diffs-tiles from the server in a certain way that requires some configuration. 
+For the configuration of the server [NGINX](https://www.nginx.com) was used together with [CertBot](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04) for https.
+
+The configuration of the route for the diffs-tiles:
+```
+location /vector-tiles/ {
+    add_header 'content-encoding' 'gzip';
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+    root /var/www/;
+    try_files $uri =200;
+}
+```
+
+- `'content-encoding' 'gzip'`: Gzip compressing is used because of the way mapbox decodes the data.
+- `'Access-Control-Allow-Origin' '*' always`: To allow any resource to access your resource.
+- `'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always`: Specifies the methods allowed when accessing the resource in response to a preflight request.
+- `try_files $uri =200`: Mapbox throws exceptions when tiles are not found. This makes it unpredictable because not all tiles contain issues. To fix this we always set the return code to 200.
+``
