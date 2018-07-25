@@ -9,7 +9,8 @@ osmosis --read-pbf ./belgium-latest.osm.pbf --bounding-box left=4.23248291015625
 osmosis --read-pbf ./brussels-latest-bbox.osm.pbf --bounding-polygon file=brussels.poly --write-pbf ./brussels-latest.osm.pbf
 
 #convert to geojson while taking only highways.
-ogr2ogr --config OSM_CONFIG_FILE osmconf.ini -f GeoJSON -select name,highway,bridge,tunnel,surface -where "highway is not null and highway not in ('footway', 'steps', 'cycleway', 'pedestrian', 'bridleway', 'construction', 'corridor', 'path', 'platform')" -nln osm_highways -progress  brussels.geojson brussels-latest.osm.pbf lines
+ogr2ogr --config OSM_CONFIG_FILE osmconf.ini -f GeoJSON -select name,highway,bridge,tunnel,surface -where "highway is not null" -nln osm_highways -progress  brussels.geojson brussels-latest.osm.pbf lines
+#ogr2ogr --config OSM_CONFIG_FILE osmconf.ini -f GeoJSON -select name,highway,bridge,tunnel,surface -where "highway is not null and highway not in ('footway', 'steps', 'cycleway', 'pedestrian', 'bridleway', 'construction', 'corridor', 'path', 'platform')" -nln osm_highways -progress  brussels.geojson brussels-latest.osm.pbf lines
 
 cp brussels.geojson ../../sharedfolder
 
