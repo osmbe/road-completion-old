@@ -22,10 +22,10 @@ mobigis_output="mobigis_output.geojson"
 node processUrbis.js /sharedfolder/$level_plus1 /sharedfolder/$level_plus1_output
 node processUrbis.js /sharedfolder/$level_minus1 /sharedfolder/$level_minus1_output
 node processUrbis.js /sharedfolder/$level0 /sharedfolder/$level0_output
-node processCobblestone.js /sharedfolder/$mobigis /sharedfolder/$mobigis_output
+#node processCobblestone.js /sharedfolder/$mobigis /sharedfolder/$mobigis_output
 
 # We now merge the three files together
 # Usage: geojson-merge file1 file2 file3 > output
-geojson-merge /sharedfolder/$level0_output /sharedfolder/$level_minus1_output /sharedfolder/$level_plus1_output /sharedfolder/$mobigis_output > /sharedfolder/$combined
-
+geojson-merge /sharedfolder/$level0_output /sharedfolder/$level_minus1_output /sharedfolder/$level_plus1_output > /sharedfolder/$combined
+#/sharedfolder/$mobigis_output
 echo "processjs completed"
