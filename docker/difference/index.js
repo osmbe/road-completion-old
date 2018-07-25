@@ -117,6 +117,11 @@ var stats = {
 };
 tileReduce(opts).on('reduce', function(result) {
   // Here we are collecting the different values that we're exporting in the difference.js file 
+  if (result.error) {
+    console.log(result.error);
+    return;
+  }
+
     var type = result.type;
     var diff = result.diffs;
     var buffers = result.buffers;
@@ -124,6 +129,7 @@ tileReduce(opts).on('reduce', function(result) {
     var localStats = result.stats;
     stats.diff += localStats.diff;
     stats.total += localStats.total;
+    // console.log(stats);
 
     // those loops permits us to write each feature in the right output file
     for (var i = 0; i < diff.features.length; i++) {
@@ -143,14 +149,6 @@ tileReduce(opts).on('reduce', function(result) {
       bufferOutputStream.write(JSON.stringify(buffers.features[i]));
     }
   }
-
-  /*if(statsOutputStream) {
-      if(!firstStatFeature){
-        statsOutputStream.write(',');
-      }
-      firstStatFeature = false;
-      statsOutputStream.write(JSON.stringify(stats));
-  }*/
 
   if (refOutputStream && refs && refs.features) {
     for (var i = 0; i < refs.features.length; i++) {
@@ -189,7 +187,7 @@ tileReduce(opts).on('reduce', function(result) {
   }
 
   if(statsOutputStream) {
-    statsOutputStream.write(stats);
+    statsOutputStream.write(JSON.stringify(stats));
     statsOutputStream.end();
   }
 

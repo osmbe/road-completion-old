@@ -2,7 +2,7 @@
 
 file="$(pwd)/host-share"
 
-rm -rf $file/*
+#rm -rf $file/*
 
 # gets data for osm and urbis, cuts out brussels for osm
 echo "Running data tool:"
@@ -17,7 +17,7 @@ sudo docker build -t road-completion-tagprocess .
 sudo docker run -v $file:/sharedfolder road-completion-tagprocess
 
 # convert data from osm and urbis to comparable mbtiles
-echo "Running tag conversion:"
+echo "Running conversion to mbtiles:"
 cd ../convert
 sudo docker build -t road-completion-convert .
 sudo docker run -v $file:/sharedfolder road-completion-convert

@@ -19,7 +19,9 @@ module.exports = function(data, tile, writeData, done) {
   var refRoadType = "";
   var refRoadsLength = 0;
   var diffRoadsLength = 0;
+  var refRoadsCount = 0;
   var debugDir = "/home/xivk/work/osmbe/road-completion/debug/";
+  var errorMessage = "";
   if (!fs.existsSync(debugDir)) {
     debugDir = undefined;
   }
@@ -84,13 +86,15 @@ module.exports = function(data, tile, writeData, done) {
           fs.writeFile (osmBuffersDir + tileName, JSON.stringify(merged));
         }
 
+        refRoadsCount += refRoads.features.length;
+
         if (refRoads && streetBuffers) {
           refRoads.features.forEach(function(refRoad){
+            refRoadsLength += turf.lineDistance(refRoad);
             streetBuffers.features.forEach(function(streetsRoad){
               var roadDiff = turf.difference(refRoad, streetsRoad);
               refRoadType = refRoad.geometry.type;
-              if(roadDiff && !filter(roadDiff)){
-
+              if(roadDiff && !filter(roadDiff, refRoadType)) {
                 // Here we are trying to calculate the distance of the reference roads & the issues (output of the difference between reference and source inputs)
                 //refRoadsLength += turf.lineDistance(refRoad);
                 //diffRoadsLength += turf.lineDistance(roadDiff);
@@ -101,6 +105,7 @@ module.exports = function(data, tile, writeData, done) {
                       //if(!CompareByTag(streetsRoad.properties.bridge) || !CompareByTag(streetsRoad.properties.tunnel) || !CompareCobblestone(streetsRoad.properties.surface)) refDeltas.features.push(roadDiff);
                     //}
                     //else  
+                    diffRoadsLength += turf.lineDistance(roadDiff);
                     refDeltas.features.push(roadDiff);
                   //}
                   
@@ -176,8 +181,7 @@ module.exports = function(data, tile, writeData, done) {
   }
   catch (e)
   {
-    console.log("Could not process tile " + tileName + ": " + e.message);
-    console.log(e);
+    errorMessage = "Could not process tile " + tileName + ": " + e.message;
   }
 
   done(null, { 
@@ -189,8 +193,10 @@ module.exports = function(data, tile, writeData, done) {
     osm: osmData,
     stats: { 
       total: refRoadsLength,
-      diff: diffRoadsLength
-    }
+      diff: diffRoadsLength,
+      count: refRoadsCount
+    },
+    error: errorMessage
    });
 };
 
@@ -212,27 +218,21 @@ function clip(lines, tile) {
   return lines;
 }
 
-function filter(road) {
+function filter(road, refRoadType) {
   // permits us to filter the streets that are too small to be processed
   // if you want to add the linestring then you need to add refRoadType as a second argument for this function and uncomment the if + else statement
 
-  //if(refRoadType === "Polygon" || refRoadType === "MultiPolygon"){
+  if(refRoadType === "Polygon" || refRoadType === "MultiPolygon"){
     var area = turf.area(road, 'kilometers');
     if(area < 30) {
       return true;
     } else {
       return false;
     }
-  //}
-  /*
+  }
   else {
-    var length = turf.lineDistance(road, 'kilometers');
-    if (length < 0.03) {
-      return true;
-    } else {
-      return false;
-    }
-  }*/
+    return false;
+  }
 }
 
 function getNewHash(featcoords, hashedcoords) {
