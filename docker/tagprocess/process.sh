@@ -29,3 +29,11 @@ node processUrbis.js /sharedfolder/$level0 /sharedfolder/$level0_output
 geojson-merge /sharedfolder/$level0_output /sharedfolder/$level_minus1_output /sharedfolder/$level_plus1_output > /sharedfolder/$combined
 #/sharedfolder/$mobigis_output
 echo "processjs completed"
+
+rm -rf /sharedfolder/$level_plus1 
+rm -rf /sharedfolder/$level_plus1_output
+rm -rf /sharedfolder/$level_minus1 
+rm -rf /sharedfolder/$level_minus1_output
+rm -rf /sharedfolder/$level0 
+rm -rf /sharedfolder/$level0_output
+rm -rf /sharedfolder/$mobigis
