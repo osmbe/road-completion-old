@@ -5,10 +5,10 @@
 ## Scripts
 
 - **process.js**
-    - converts Wegenregister tags to OSM tags.
+    - Converts Wegenregister tags to OSM tags.
 - **processUrbis.js**
-    - converts Urbis tags to OSM tags.
+    - Converts Urbis tags to OSM tags.
 - **(WIP) processCobblestone.js**
-    - converts Mobigis cobblestone data to OSM tag.
+    - Converts Mobigis cobblestone data to OSM tag.
 - **process.sh**
-    - is used by the docker image to automate the urbis tag conversion in multiple files, it also merges all those files together.
+    - This script is used by the docker image to automate the urbis tag conversion in multiple files, it also merges all those files together.
