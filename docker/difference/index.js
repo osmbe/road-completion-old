@@ -7,6 +7,7 @@ var args = process.argv.slice(2);
 
 var outputStream = fs.createWriteStream(args[2]);
 
+// If we got more than 3 arguments then we will create a write stream for the stats, buffer & references output streams
 var statsOutputStream = undefined;
 if(args.length > 3) {
   statsOutputStream = fs.createWriteStream(args[3]);
@@ -22,6 +23,7 @@ if (args.length > 5) {
   refOutputStream = fs.createWriteStream(args[5]);
 }
 
+// We don't use flanders & groterWechel here
 var flanders = {
   "type": "Polygon",
   "coordinates": [
@@ -79,7 +81,7 @@ var groterWechel = {
 };
 
 
-
+// Here we are taking the inputs that we want to compare to export the issues (issue are the differences between both inputs)
 var opts = {
   zoom: 14,
   //geoJson: groterWechel,
@@ -99,6 +101,11 @@ var opts = {
   map: __dirname + '/difference.js'
 };
 
+/* 
+  the fourth first boolean values are there to verify if the feature that we want to write in the output is the first one or not
+  diff is
+  stats is here an array that permits us to collect the total length of roads for the reference data source & the issues that are highlighted after the difference between reference & OSM data source
+*/
 var firstFeature = true;
 var firstBufferFeature = true;
 var firstRefFeature = true;
@@ -109,6 +116,7 @@ var stats = {
   diff:0
 };
 tileReduce(opts).on('reduce', function(result) {
+  // Here we are collecting the different values that we're exporting in the difference.js file 
     var type = result.type;
     var diff = result.diffs;
     var buffers = result.buffers;
@@ -117,6 +125,7 @@ tileReduce(opts).on('reduce', function(result) {
     stats.diff += localStats.diff;
     stats.total += localStats.total;
 
+    // those loops permits us to write each feature in the right output file
     for (var i = 0; i < diff.features.length; i++) {
       if (!firstFeature) {
         outputStream.write(',');
@@ -154,6 +163,7 @@ tileReduce(opts).on('reduce', function(result) {
   }
 })
 .on('start', function () {
+  // Here we write the head of the geojson file to permit, after that, the writing of features
   outputStream.write('{ "type": "FeatureCollection", "features": [');
   if (bufferOutputStream) {
     bufferOutputStream.write('{ "type": "FeatureCollection", "features": [');
@@ -167,6 +177,7 @@ tileReduce(opts).on('reduce', function(result) {
   throw err;
 })
 .on('end', function() {
+  // Here we write the end of the geojson file & we stop all of the output streams
   if (bufferOutputStream) {
     bufferOutputStream.write('] }');
     bufferOutputStream.end();
