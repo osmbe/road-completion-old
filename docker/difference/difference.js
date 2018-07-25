@@ -7,10 +7,16 @@ var turf = require('@turf/turf'),
   fx = require('mkdir-recursive');
 
 module.exports = function(data, tile, writeData, done) {
+  /* refDeltas is a featureCollection (array of features) it permits the stockage of our issues 
+    streetBuffers is the variable that contains the buffers created on the basis of OSM source data
+    refRoads is the variable that contains the open data reference source
+    refRoadType takes the type of the feature we are actually processing and permits us to have clearer statements while comparing the tags (useful if we use two inputs (one with Polygons & the other one with LineStrings))
+    RefRoads & diffRoads -length are the variables for calculating the total length of the open data reference source 
+  */
   var refDeltas = turf.featureCollection([]);
   var streetBuffers = undefined;
   var refRoads = undefined;
-  var refRoadType = undefined;
+  var refRoadType = "";
   var refRoadsLength = 0;
   var diffRoadsLength = 0;
   var debugDir = "/home/xivk/work/osmbe/road-completion/debug/";
@@ -27,6 +33,7 @@ module.exports = function(data, tile, writeData, done) {
       var refRoadsDir = debugDir + "refroads/" + tileDir;
       var osmBuffersDir = debugDir + "osmbuffers/" + tileDir;
       var diffsDir = debugDir + "diffs/" + tileDir;
+      // setting up the debug directory
       if (debugDir) {
         if (!fs.existsSync(osmDataDir)){
           fx.mkdirSync(osmDataDir);
@@ -73,12 +80,6 @@ module.exports = function(data, tile, writeData, done) {
         merged = turf.simplify(merged, 0.000001, false);
         streetBuffers = normalize(merged);
         
-
-        //**
-        //buffer = turf.simplify(buffer, 0.000001, false);
-        //streetBuffers = normalize(buffer); 
-        //**
-
         if (debugDir) {
           fs.writeFile (osmBuffersDir + tileName, JSON.stringify(merged));
         }
@@ -89,9 +90,11 @@ module.exports = function(data, tile, writeData, done) {
               var roadDiff = turf.difference(refRoad, streetsRoad);
               refRoadType = refRoad.geometry.type;
               if(roadDiff && !filter(roadDiff)){
+
+                // Here we are trying to calculate the distance of the reference roads & the issues (output of the difference between reference and source inputs)
                 //refRoadsLength += turf.lineDistance(refRoad);
                 //diffRoadsLength += turf.lineDistance(roadDiff);
-                // Compare to see if there is a difference in their names
+                  
                   
                   //if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) {
                     //if(refRoad.properties.bridge || refRoad.properties.tunnel || refRoad.properties.cobblestone) {
@@ -129,6 +132,8 @@ module.exports = function(data, tile, writeData, done) {
             var hash = undefined;
 
             try {
+              // There is two loops over there one for the Polygons and one for the LineStrings, when we use LineStrings long/lat are in an array & those arrays are in another array
+              // for the polygons it's the same process but with one more array
               if(feature.geometry.type === "Polygon") {
                 for(var c = 0; c < feature.geometry.coordinates.length; c++){
                   for(var d = 0; d < feature.geometry.coordinates[c].length; d++){
@@ -145,6 +150,7 @@ module.exports = function(data, tile, writeData, done) {
                   }
                 }
               }
+              // this function permits us to make a unique hash for each feature
               hash = getNewHash( hashF(feature.properties), hashF(coords));
               if(hash === null || hash === "") {
                 throw new NotConfirmedHashCodeException();
@@ -154,7 +160,8 @@ module.exports = function(data, tile, writeData, done) {
                 err = new NotConfirmedHashCodeException("Impossible to hash coordinates and properties");
                 console.log(err.toString());
               }
-
+          
+              // Here we are setting up the properties for the feature we are processing as its unique identifier and his tile coordinates
           feature.properties.id = "" + hash;
           feature.properties.tile_z = tile[2];
           feature.properties.tile_x = tile[0];
@@ -174,12 +181,13 @@ module.exports = function(data, tile, writeData, done) {
   }
 
   done(null, { 
+    // Here we are sending all the data that we need to write in our different output files
     type: refRoadType,
     diffs: refDeltas,
     buffers: streetBuffers,
     refs: refRoads,
     osm: osmData,
-    stats: {  // try to send them only if it's a LineString document
+    stats: { 
       total: refRoadsLength,
       diff: diffRoadsLength
     }
@@ -205,13 +213,17 @@ function clip(lines, tile) {
 }
 
 function filter(road) {
-  
+  // permits us to filter the streets that are too small to be processed
+  // if you want to add the linestring then you need to add refRoadType as a second argument for this function and uncomment the if + else statement
+
+  //if(refRoadType === "Polygon" || refRoadType === "MultiPolygon"){
     var area = turf.area(road, 'kilometers');
-    if(area < 350) {
+    if(area < 30) {
       return true;
     } else {
       return false;
     }
+  //}
   /*
   else {
     var length = turf.lineDistance(road, 'kilometers');
@@ -232,7 +244,7 @@ function getNewHash(featcoords, hashedcoords) {
   let hashnb = 17;
   try {
       hashresult = featcoords + hashedcoords;
-      /*
+      /* This process permits to hash strings we don't use it there because we wanted to have a more reliable hashing function
       for(let i = 0; i < hashedcoords.length;i++) {
         hashnb = (((hashnb << 5) - hashnb ) + hashedcoords.charCodeAt(i)) & 0xFFFFFFFF;
       }
@@ -249,21 +261,25 @@ function getNewHash(featcoords, hashedcoords) {
   }
 }
 
+// CompareByTags permits us to see if two tags are different, if they're different then we return true
 function CompareByTags(refTag, sourceTag) {
   if(refTag !== sourceTag) return true;
   else return false;
 }
 
+// CompareByTag permits us to see if one tag has a "yes" value in the feature we're processing
 function CompareByTag(refTag) {
   if(refTag === "yes") return true;
   else return false;
 }
 
+// CompareCobblestone permits us to see if one feature has a cobblestone value in the feature we're processing
 function CompareCobblestone(refTag) {
   if (refTag === "sett" || refTag === "unhewn_cobblestone" || refTag === "cobblestone") return true;
   else return false;
 }
 
+// The two next functions are customized exceptions, it permits us to immediately know from where the error comes from
 function NotNewHashCodeGenerationException(message) {
     this.message = message;
     if("captureStackTrace" in Error) Error.captureStackTrace(this, NotNewHashCodeGenerationException);
