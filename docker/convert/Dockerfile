@@ -18,7 +18,6 @@ RUN apk add --no-cache sudo git g++ make libgcc libstdc++ sqlite-libs sqlite-dev
 
 USER tippecanoe
 WORKDIR /home/tippecanoe
-ENTRYPOINT /bin/bash
 COPY . /road-completion
 RUN sudo mkdir /sharedfolder
 ENTRYPOINT cd /road-completion/osm && sh get-data.sh && cd ../urbis && sh get-data.sh && cd ../mbtiles && sh convert.sh
