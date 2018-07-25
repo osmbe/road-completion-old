@@ -9,6 +9,7 @@ var turf = require('@turf/turf'),
 module.exports = (data, tile, writeData, done) => 
 {
   var refDeltas = turf.featureCollection([]);
+  var differences = [];
   var streetBuffers = undefined;
   var refRoads = undefined;
   var refRoadType = undefined;
@@ -107,19 +108,19 @@ module.exports = (data, tile, writeData, done) =>
                 {
                   for(var d = 0; d < refRoad.geometry.coordinates[c].length; d++)
                   {
-                    refRoadsLength += turf.length(refRoad.geometry.coordinates[c][d]);
+                    //refRoadsLength += turf.length(refRoad.geometry.coordinates[c][d]);
                   }
                 }
                 for(var e = 0; e < roadDiff.geometry.coordinates.length; e++)
                 {
                   for(var f = 0; f <roadDiff.geometry.coordinates[e].length; f++)
                   {
-                    diffRoadsLength += turf.length(roadDiff.geometry.coordinates[e][f]);
+                    //diffRoadsLength += turf.length(roadDiff.geometry.coordinates[e][f]);
                   }
                 }
                 // Compare to see if there is a difference in their names
                   
-                  if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) 
+                  /*if( refRoad.geometry.type === "Polygon" && CompareByTags(refRoad.properties.name, streetsRoad.properties.name)) 
                   {
                     if(refRoad.properties.bridge || refRoad.properties.tunnel || refRoad.properties.cobblestone) 
                     {
@@ -129,6 +130,52 @@ module.exports = (data, tile, writeData, done) =>
                       } 
                     }
                     else  refDeltas.features.push(roadDiff);
+                  }*/
+                  if(refRoad.geometry.type === "Polygon" && !refRoad.properties.parking_aisle)
+                  {
+                    if(CompareByTags(refRoad.properties.name, streetsRoad.properties.name))
+                    {
+                      differences.name = {
+                        urbis: refRoad.properties.name,
+                        osm: streetsRoad.properties.name
+                      };
+                      console.log(differences.name)
+                    }
+                    if(refRoad.properties.bridge)
+                    {
+                      if(!CompareByTag(streetRoad.properties.bridge) || !streetRoad.properties.bridge)
+                      {
+                        differences.bridge = {
+                          urbis: refRoad.properties.bridge,
+                          osm: streetRoad.properties.bridge
+                        };
+                        console.log(differences.bridge)
+                      }
+                    }
+                    if(refRoad.properties.tunnel)
+                    {
+                      if(!CompareByTag(streetRoad.properties.tunnel) || !streetRoad.properties.tunnel)
+                      {
+                        differences.tunnel = {
+                          urbis: refRoad.properties.tunnel,
+                          osm: streetRoad.properties.tunnel
+                        };
+                        console.log(differences.tunnel)
+                      }
+                    }
+                    if(refRoad.properties.parking_aisle)
+                    {
+                      if(!CompareByTag(streetRoad.properties.parking_aisle) || !streetRoad.properties.parking_aisle)
+                      {
+                        differences.parking_aisle = {
+                          urbis: refRoad.properties.parking_aisle,
+                          osm: streetRoad.properties.parking_aisle
+                        };
+                        console.log(differences.parking_aisle)
+                      }
+                    }
+                    refDeltas.features.push(roadDiff);
+                    refDeltas.features.push(differences);
                   }
                   
                 } 
@@ -226,7 +273,8 @@ module.exports = (data, tile, writeData, done) =>
     stats: {  // try to send them only if it's a LineString document
       total: refRoadsLength,
       diff: diffRoadsLength
-    }
+    },
+    differences: differences
    });
 };
 

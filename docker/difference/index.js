@@ -103,6 +103,7 @@ var firstFeature = true;
 var firstBufferFeature = true;
 var firstRefFeature = true;
 var firstStatFeature = true;
+var differences = [];
 var diff = turf.featureCollection([]);
 var stats = {
   total: 0,
@@ -116,6 +117,7 @@ tileReduce(opts).on('reduce', function(result) {
     var localStats = result.stats;
     stats.diff += localStats.diff;
     stats.total += localStats.total;
+    differences = result.differences;
 
     for (var i = 0; i < diff.features.length; i++) {
       if (!firstFeature) {
@@ -183,5 +185,6 @@ tileReduce(opts).on('reduce', function(result) {
   }
 
   outputStream.write('] }');
+  outputStream.write(JSON.stringify(differences));
   outputStream.end();
 });
