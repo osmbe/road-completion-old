@@ -11,8 +11,37 @@ var opts = {
   target: args[1], 
 };
 
+// TO DO: Process Urbis data and then add the cobblestone tags from mobigis data
+// this script should change depending on the number of arguments for example:
+/*
+    var opts = {};
+    if (args.length == 2)
+    {
+        opts = {
+            source: args[0],
+            target: args[1],
+        };
+    }
+    if (args.length == 3)
+    {
+        opts = {
+            source: args[0],
+            mobigis: args[1],
+            target: args[2],
+        };
+    }
+*/
+// So if we get 2 arguments (urbis data and output) we just convert the tags
+// And if we get 3 arguments (urbis data, mobigis cobblestone data and output) we convert urbis tags to osm tags and then add the converted mobigis tags
+/*
+    if(p.pave == 1)
+    {
+        transformed.surface = 'sett';
+    }
+*/
+
 var i = 0;
-geojsonTransform.transform(opts.source, opts.target, function(p) {
+geojsonTransform.transform(opts.source, opts.target, (p) => {
 
     var transformed = {};
     for (var property in p) 
@@ -36,6 +65,7 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
     // TYPE B: bridges
     // TYPE T: tunnels
     // TYPE S, I, W: road types (just unclassified highway in OSM)
+    // TYPE GB: parks
     if (p.TYPE)
     {
         if (p.TYPE == 'K')
@@ -61,10 +91,12 @@ geojsonTransform.transform(opts.source, opts.target, function(p) {
             if (transformed.highway != "unclassified")
             transformed.highway = "unclassified";
         }
+        if (p.TYPE == 'GB')
+        {
+            transformed.highway = "unclassified";
+            transformed.leisure = "park";
+        }
     }
-
-        // ADD COBBLESTONE transformed.surface = "sett"
-        // 
 
     // I had to comment this part out because I couldn't seem to access the fr and nl name inside of "other_tags"
     /*if (p.PN_NAME_FR && p.PN_NAME_FR != 'Inconnu')
