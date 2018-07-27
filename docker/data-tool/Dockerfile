@@ -40,5 +40,5 @@ RUN sudo apt-get install -y osmosis
 COPY . /road-completion
 
 ENTRYPOINT cd ./road-completion/osm && sh get-data.sh && cd ../urbis && sh get-data.sh && cd ../mobigis && sh get-data.sh && cd ../wegenregister && sh get-data.sh
-
+#ENTRYPOINT cd ./road-completion/wegenregister && sh get-data.sh
 

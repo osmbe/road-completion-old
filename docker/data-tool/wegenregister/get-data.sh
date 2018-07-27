@@ -12,8 +12,9 @@ unzip ./Wegenregister_SHAPE_20180621.zip -d ./
 fi
 
 #convert wegenregister to geojson
-if [ ! -f ./wegenregister.geojson ]; then
+#if [ ! -f ./wegenregister.geojson ]; then
+rm wegenregister.geojson
 ogr2ogr --config SHAPE_ENCODING "ISO-8859-1" -f "GeoJSON" -s_srs "EPSG:31370" -t_srs "EPSG:4326" -progress ./wegenregister.geojson ./Wegenregister_SHAPE_20180621/Shapefile/Wegsegment.shp
-fi
+#fi
 
 cp wegenregister.geojson ../../../sharedfolder
