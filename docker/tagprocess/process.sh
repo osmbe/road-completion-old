@@ -33,10 +33,10 @@ echo "processjs completed"
 # also process wegenregister.
 node process.js /sharedfolder/wegenregister.geojson /sharedfolder/wegenregister-transformed.geojson
 
-rm -rf /sharedfolder/$level_plus1 
-rm -rf /sharedfolder/$level_plus1_output
-rm -rf /sharedfolder/$level_minus1 
-rm -rf /sharedfolder/$level_minus1_output
-rm -rf /sharedfolder/$level0 
-rm -rf /sharedfolder/$level0_output
-rm -rf /sharedfolder/$mobigis
+# rm -rf /sharedfolder/$level_plus1 
+# rm -rf /sharedfolder/$level_plus1_output
+# rm -rf /sharedfolder/$level_minus1 
+# rm -rf /sharedfolder/$level_minus1_output
+# rm -rf /sharedfolder/$level0 
+# rm -rf /sharedfolder/$level0_output
+# rm -rf /sharedfolder/$mobigis
