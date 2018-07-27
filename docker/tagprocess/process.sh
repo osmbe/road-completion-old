@@ -30,6 +30,9 @@ geojson-merge /sharedfolder/$level0_output /sharedfolder/$level_minus1_output /s
 #/sharedfolder/$mobigis_output
 echo "processjs completed"
 
+# also process wegenregister.
+node process.js /sharedfolder/wegenregister.geojson /sharedfolder/wegenregister-transformed.geojson
+
 rm -rf /sharedfolder/$level_plus1 
 rm -rf /sharedfolder/$level_plus1_output
 rm -rf /sharedfolder/$level_minus1 

@@ -7,8 +7,8 @@ rm -rf $file/*
 # gets data for osm and urbis, cuts out brussels for osm
 echo "Running data tool:"
 cd data-tool
-#sudo docker run -v $file:/sharedfolder road-completion-getdata
-#sudo docker run -v /home/antoine/road-completion/docker/host-share:/sharedfolder road-completion-getdata
+sudo docker run -v $file:/sharedfolder road-completion-getdata
+sudo docker run -v /home/antoine/road-completion/docker/host-share:/sharedfolder road-completion-getdata
 
 echo "Running tag process:"
 cd ../tagprocess
