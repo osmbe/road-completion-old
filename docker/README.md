@@ -2,8 +2,6 @@
 
 The Belgian OpenStreetMap community is building tools to make sure that any correction in the official open data road sets is made visible to the mapping community as quickly and as accurately as possible.
 
-The live version of the tool is visible on https://road-completion.osm.be .
-
 The road-completion tool uses open data from [Urbis](https://cibg.brussels/nl/onze-oplossingen/urbis-solutions/urbis-data) to compare to OpenStreetMap. After comparing, the tool will visualize all issues that need to be checked by te OSM community.
 
 For processing and comparing the data the following tools are used:
